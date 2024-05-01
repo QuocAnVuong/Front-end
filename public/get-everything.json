@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "data": {
+    "styles": [
+      {
+        "id": 1,
+        "StyleName": "Chinese"
+      },
+      {
+        "id": 2,
+        "StyleName": "Italian"
+      },
+      {
+        "id": 3,
+        "StyleName": "Vietnamese"
+      },
+      {
+        "id": 4,
+        "StyleName": "Asian"
+      }
+    ],
+    "ingredients": [
+      {
+        "IngredientID": 1,
+        "IngredientName": "Flour"
+      },
+      {
+        "IngredientID": 2,
+        "IngredientName": "Cocoa Powder"
+      },
+      {
+        "IngredientID": 3,
+        "IngredientName": "Sugar"
+      },
+      {
+        "IngredientID": 4,
+        "IngredientName": "Spinach"
+      },
+      {
+        "IngredientID": 5,
+        "IngredientName": "Banana"
+      },
+      {
+        "IngredientID": 6,
+        "IngredientName": "Sushi Rice"
+      },
+      {
+        "IngredientID": 7,
+        "IngredientName": "Salmon"
+      },
+      {
+        "IngredientID": 8,
+        "IngredientName": "Nori Seaweed"
+      },
+      {
+        "IngredientID": 9,
+        "IngredientName": "Chopped Garlic"
+      },
+      {
+        "IngredientID": 10,
+        "IngredientName": "Red Chili Flakes"
+      }
+    ],
+    "flavours": [
+      {
+        "FlavourID": 1,
+        "Flavour": "Spicy"
+      },
+      {
+        "FlavourID": 2,
+        "Flavour": "Sweet"
+      },
+      {
+        "FlavourID": 3,
+        "Flavour": "Sour"
+      }
+    ]
+  }
+}

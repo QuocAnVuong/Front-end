@@ -14,3 +14,24 @@
   border-right: var(--size) solid transparent;
   border-top: var(--size) solid #3f3f3f;
 }
+
+@media only screen and (min-width: 1024px) {
+  .custom-arrow::before,
+  .custom-arrow::after {
+    --size: 12.5px;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .custom-arrow::before,
+  .custom-arrow::after {
+    --size: 15.5px;
+  }
+}
+
+@media only screen and (min-width: 1536px) {
+  .custom-arrow::before,
+  .custom-arrow::after {
+    --size: 19px;
+  }
+}
