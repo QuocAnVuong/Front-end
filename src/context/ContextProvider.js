@@ -4,34 +4,62 @@ import { createContext, useState } from "react";
 export const IngredientContext = createContext(null);
 export const FlavorContext = createContext(null);
 export const StyleContext = createContext(null);
+export const LoginContext = createContext(null);
+export const LoginPageContext = createContext(null);
+export const UserContext = createContext(null);
 
 function ContextProvider({ children }) {
+  const [user, setUser] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [flavors, setFlavors] = useState([]);
   const [styles, setStyles] = useState([]);
+  const [duringLogin, setDuringLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
   return (
-    <IngredientContext.Provider
+    <UserContext.Provider
       value={{
-        ingredients,
-        setIngredients,
+        user,
+        setUser,
       }}
     >
-      <FlavorContext.Provider
+      <LoginPageContext.Provider
         value={{
-          flavors,
-          setFlavors,
+          duringLogin,
+          setDuringLogin,
         }}
       >
-        <StyleContext.Provider
+        <LoginContext.Provider
           value={{
-            styles,
-            setStyles,
+            isLogin,
+            setIsLogin,
           }}
         >
-          {children}
-        </StyleContext.Provider>
-      </FlavorContext.Provider>
-    </IngredientContext.Provider>
+          <IngredientContext.Provider
+            value={{
+              ingredients,
+              setIngredients,
+            }}
+          >
+            <FlavorContext.Provider
+              value={{
+                flavors,
+                setFlavors,
+              }}
+            >
+              <StyleContext.Provider
+                value={{
+                  styles,
+                  setStyles,
+                }}
+              >
+                {children}
+              </StyleContext.Provider>
+            </FlavorContext.Provider>
+          </IngredientContext.Provider>
+        </LoginContext.Provider>
+      </LoginPageContext.Provider>
+    </UserContext.Provider>
   );
 }
 

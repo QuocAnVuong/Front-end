@@ -1,79 +1,64 @@
 {
-  "success": true,
-  "data": {
-    "styles": [
-      {
-        "id": 1,
-        "StyleName": "Chinese"
-      },
-      {
-        "id": 2,
-        "StyleName": "Italian"
-      },
-      {
-        "id": 3,
-        "StyleName": "Vietnamese"
-      },
-      {
-        "id": 4,
-        "StyleName": "Asian"
-      }
-    ],
-    "ingredients": [
-      {
-        "IngredientID": 1,
-        "IngredientName": "Flour"
-      },
-      {
-        "IngredientID": 2,
-        "IngredientName": "Cocoa Powder"
-      },
-      {
-        "IngredientID": 3,
-        "IngredientName": "Sugar"
-      },
-      {
-        "IngredientID": 4,
-        "IngredientName": "Spinach"
-      },
-      {
-        "IngredientID": 5,
-        "IngredientName": "Banana"
-      },
-      {
-        "IngredientID": 6,
-        "IngredientName": "Sushi Rice"
-      },
-      {
-        "IngredientID": 7,
-        "IngredientName": "Salmon"
-      },
-      {
-        "IngredientID": 8,
-        "IngredientName": "Nori Seaweed"
-      },
-      {
-        "IngredientID": 9,
-        "IngredientName": "Chopped Garlic"
-      },
-      {
-        "IngredientID": 10,
-        "IngredientName": "Red Chili Flakes"
-      }
-    ],
-    "flavours": [
-      {
-        "FlavourID": 1,
-        "Flavour": "Spicy"
-      },
-      {
-        "FlavourID": 2,
-        "Flavour": "Sweet"
-      },
-      {
-        "FlavourID": 3,
-        "Flavour": "Sour"
-      }
-    ]
-  }
+  "validationErrors": [
+    {
+      "type": "field",
+      "msg": "Email must not be empty",
+      "path": "Email",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Please enter a valid email",
+      "path": "Email",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Invalid value",
+      "path": "Password",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Password must be longer than 1",
+      "path": "Password",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Password must have both character and letter",
+      "path": "Password",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Invalid value",
+      "path": "confirmPassword",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Password have to match",
+      "path": "confirmPassword",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "First Name must not be empty",
+      "path": "FirstName",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Last Name must not be empty",
+      "path": "LastName",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "msg": "Username must not be empty",
+      "path": "Username",
+      "location": "body"
+    }
+  ]
 }

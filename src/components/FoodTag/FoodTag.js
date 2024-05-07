@@ -3,7 +3,7 @@ import React from "react";
 function FoodTag({ value, id, handleDelete }) {
   return (
     <div
-      className="flex items-center justify-center 
+      className="flex items-center justify-center text-ellipsis overflow-hidden
       w-[116px] xl:w-[145px] 2xl:w-[174px] 3xl:w-[222px] 
       h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px] 
       bg-[#AF8260] relative 

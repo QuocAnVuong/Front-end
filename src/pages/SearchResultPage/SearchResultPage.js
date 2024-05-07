@@ -8,9 +8,9 @@ import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
 
 function SearchResultPage() {
-  const { ingredientList } = useContext(IngredientContext);
-  const { flavorList } = useContext(FlavorContext);
-  const { styleList } = useContext(StyleContext);
+  const { ingredients } = useContext(IngredientContext);
+  const { flavors } = useContext(FlavorContext);
+  const { styles } = useContext(StyleContext);
   const [menu, setMenu] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [number, setNumber] = useState(0);
@@ -20,7 +20,20 @@ function SearchResultPage() {
 
   const fetchMockData = async () => {
     try {
-      const response = await fetch("/search-recipe.json");
+      const requestBody = {
+        filterType: "1",
+        flavour: flavors,
+        style: styles,
+        ingredientList: ingredients,
+      };
+
+      const response = await fetch("http://localhost:3000/user/search-recipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
       setLoading(true);
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -35,7 +48,7 @@ function SearchResultPage() {
   //Fetch Data
   useEffect(() => {
     fetchMockData();
-  }, [ingredientList, flavorList, styleList]);
+  }, [ingredients, flavors, styles]);
 
   //Set Number
   useEffect(() => {

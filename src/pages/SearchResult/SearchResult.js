@@ -24,7 +24,12 @@ function SearchResult() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("/get-everything.json");
+        const response = await fetch("http://localhost:3000/get-everything", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         setLoading(true);
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -151,12 +156,12 @@ function SearchResult() {
         <div>Loading...</div>
       ) : (
         <div
-          className="grid grid-cols-2 
+          className="grid grid-cols-2 justify-between items-center 
       px-[30px] xl:px-[37px] 2xl:px-[44.5px] 3xl:px-[57px]"
         >
           <div
-            className="border-4 
-        rounded-[10px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
+            className="border-4 border-b-0
+        rounded-t-[10px] xl:rounded-t-[13px] 2xl:rounded-t-[15.5px] 3xl:rounded-t-[20px] 
         border-[#803D3B] 
         w-[473px] xl:w-[592px] 2xl:w-[710px] 3xl:w-[907px] 
         px-[29px] xl:px-[36px] 2xl:px-[43px] 3xl:px-[55px]"
@@ -313,8 +318,8 @@ function SearchResult() {
             </form>
           </div>
           <div
-            className="border-4 
-        rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
+            className="border-4 border-b-0
+        rounded-t-[10.5px] xl:rounded-t-[13px] 2xl:rounded-t-[15.5px] 3xl:rounded-t-[20px] 
         border-[#803D3B] 
         w-[473px] xl:w-[592px] 2xl:w-[710px] 3xl:w-[907px] 
         h-full 

@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function DishTag({ dish }) {
   return (
-    <div
+    <Link
       className="border-[3px] border-[#803D3B] 
       rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
       w-[145px] xl:w-[181px] 2xl:w-[217px] 3xl:w-[277px] 
@@ -10,11 +11,12 @@ function DishTag({ dish }) {
       p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
       flex flex-col justify-between
     "
+      to={`/search-result/${dish.ArticleID}`}
     >
       <img src="image.png" alt="" className="w-full h-auto" />
       <div className="w-full h-auto">
         <p
-          className="text-[#404040] 
+          className="text-[#404040] truncate
         text-[12.5px] xl:text-[15.5px] 2xl:text-[19px] 3xl:text-[24px] 
         font-semibold"
         >
@@ -35,7 +37,7 @@ function DishTag({ dish }) {
           Serving: {dish.Serving}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }
 

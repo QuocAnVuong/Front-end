@@ -1,0 +1,18 @@
+[
+  {
+    "Email": "123@gmail.com",
+    "FirstName": "Quoc",
+    "LastName": "Vuongf",
+    "Password": "dcmvcl2308",
+    "UserName": "Stample",
+    "confirmPassword": "dcmvcl2308"
+  },
+  {
+    "Email": "example@example.com",
+    "Password": "password123",
+    "confirmPassword": "password123",
+    "FirstName": "John",
+    "LastName": "Doe",
+    "Username": "johndoe"
+  }
+]
