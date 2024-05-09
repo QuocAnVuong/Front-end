@@ -14,11 +14,13 @@ function UserProfile() {
               Profile picture:&nbsp;&nbsp;&nbsp;&nbsp;A profile picture helps
               personalize your account
             </p>
-            <img
-              src="/img/profile.png"
-              alt=""
-              className="w-[100px] h-[100px] rounded-full"
-            />
+            <Link to={"/user/edit-image"}>
+              <img
+                src={user.ProfileImg}
+                alt=""
+                className="w-[100px] h-[100px] rounded-full"
+              />
+            </Link>
           </div>
           <div className="flex text-[32px] items-center">
             <p className="mr-[40px]">

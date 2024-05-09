@@ -1,15 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import { useParams } from "react-router-dom";
+import { LoginContext, UserContext } from "../../context/ContextProvider";
 
 function Recipe() {
   const { articleID } = useParams();
+  const { user, setUser } = useContext(UserContext);
+  const { isLogin, setIsLogin } = useContext(LoginContext);
   const [loadArticle, setLoadArticle] = useState(true);
-  const [loadIngredient] = useState(true);
+  const [loadIngredient, setLoadIngredient] = useState(true);
+  const [loadInit, setLoadInit] = useState(true);
   const [isLoading, setLoading] = useState(true);
   const [recipe, setRecipe] = useState(null);
   const [isMark, setMark] = useState(false);
-  const [ingredientsList] = useState([]);
+  const [ingredientsList, setIngredientsList] = useState([]);
+
+  useEffect(() => {
+    const fetchMockData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/init", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        setLoadInit(true);
+        const data = await response.json();
+        if (data.message === null || data.message !== "Token not found") {
+          setUser(data);
+          setIsLogin(true);
+        }
+        setLoadInit(false);
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
+      }
+    };
+    if (!isLogin) {
+      fetchMockData();
+    } else {
+      setLoadInit(false);
+    }
+  }, [setUser, setIsLogin, isLogin, user]);
 
   useEffect(() => {
     const fetchMockData = async () => {
@@ -41,16 +73,39 @@ function Recipe() {
         console.error("There was a problem fetching the mock data:", error);
       }
     };
+
+    const fetchIngredients = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/get-everything", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response);
+        setLoadIngredient(true);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log(data);
+        setIngredientsList(data.data.ingredients);
+        setLoadIngredient(false);
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
+      }
+    };
     fetchMockData();
+    fetchIngredients();
   }, [articleID]);
 
   useEffect(() => {
-    if (!loadArticle && !loadIngredient) {
+    if (!loadArticle && !loadIngredient && !loadInit) {
       setLoading(false);
     } else {
       setLoading(true);
     }
-  }, [loadArticle, loadIngredient]);
+  }, [loadArticle, loadIngredient, loadInit]);
 
   const getIngredientByID = (id) => {
     const res = ingredientsList.filter((ingredient) => {

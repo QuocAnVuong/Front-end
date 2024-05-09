@@ -3,6 +3,8 @@ import {
   IngredientContext,
   FlavorContext,
   StyleContext,
+  UserContext,
+  LoginContext,
 } from "../../context/ContextProvider";
 import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
@@ -11,44 +13,89 @@ function SearchResultPage() {
   const { ingredients } = useContext(IngredientContext);
   const { flavors } = useContext(FlavorContext);
   const { styles } = useContext(StyleContext);
+  const { user, setUser } = useContext(UserContext);
+  const { isLogin, setIsLogin } = useContext(LoginContext);
   const [menu, setMenu] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [loadRecipe, setLoadRecipe] = useState(true);
+  const [loadInit, setLoadInit] = useState(true);
   const [number, setNumber] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [numberArr, setNumberArr] = useState([1, 2, 3, 4]);
   const [displayMenu, setDisplayMenu] = useState([]);
 
-  const fetchMockData = async () => {
-    try {
-      const requestBody = {
-        filterType: "1",
-        flavour: flavors,
-        style: styles,
-        ingredientList: ingredients,
-      };
-
-      const response = await fetch("http://localhost:3000/user/search-recipe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-      setLoading(true);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  useEffect(() => {
+    const fetchMockData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/init", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        setLoadInit(true);
+        const data = await response.json();
+        if (data.message === null || data.message !== "Token not found") {
+          setUser(data);
+          setIsLogin(true);
+        }
+        setLoadInit(false);
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
       }
-      const data = await response.json();
-      setLoading(false);
-      setMenu(data);
-    } catch (error) {
-      console.error("There was a problem fetching the mock data:", error);
+    };
+    if (!isLogin) {
+      fetchMockData();
+    } else {
+      setLoadInit(false);
     }
-  };
+  }, [setUser, setIsLogin, isLogin, user]);
+
   //Fetch Data
   useEffect(() => {
+    const fetchMockData = async () => {
+      try {
+        const requestBody = {
+          filterType: "1",
+          flavour: flavors,
+          style: styles,
+          ingredientList: ingredients,
+        };
+
+        const response = await fetch(
+          "http://localhost:3000/user/search-recipe",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(requestBody),
+          }
+        );
+        setLoadRecipe(true);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setLoadRecipe(false);
+        setMenu(data);
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
+      }
+    };
+
     fetchMockData();
   }, [ingredients, flavors, styles]);
+
+  useEffect(() => {
+    if (!loadRecipe && !loadInit) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [loadRecipe, loadInit]);
 
   //Set Number
   useEffect(() => {

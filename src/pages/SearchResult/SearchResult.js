@@ -8,6 +8,8 @@ import {
   IngredientContext,
   FlavorContext,
   StyleContext,
+  LoginContext,
+  UserContext,
 } from "../../context/ContextProvider";
 
 function SearchResult() {
@@ -20,6 +22,38 @@ function SearchResult() {
   const [flavorsList, setFlavorsList] = useState([]);
   const [stylesList, setStylesList] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [loadEverything, setLoadEverything] = useState(true);
+  const [loadInit, setLoadInit] = useState(true);
+  const { isLogin, setIsLogin } = useContext(LoginContext);
+  const { user, setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchMockData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/init", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        setLoadInit(true);
+        const data = await response.json();
+        if (data.message === null || data.message !== "Token not found") {
+          setUser(data);
+          setIsLogin(true);
+        }
+        setLoadInit(false);
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
+      }
+    };
+    if (!isLogin) {
+      fetchMockData();
+    } else {
+      setLoadInit(false);
+    }
+  }, [setUser, setIsLogin, isLogin, user]);
 
   useEffect(() => {
     const fetchMockData = async () => {
@@ -30,7 +64,7 @@ function SearchResult() {
             "Content-Type": "application/json",
           },
         });
-        setLoading(true);
+        setLoadEverything(true);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -38,14 +72,21 @@ function SearchResult() {
         setIngredientsList(data.data.ingredients);
         setFlavorsList(data.data.flavours);
         setStylesList(data.data.styles);
-        setLoading(false);
+        setLoadEverything(false);
       } catch (error) {
         console.error("There was a problem fetching the mock data:", error);
       }
     };
-
     fetchMockData();
   }, []);
+
+  useEffect(() => {
+    if (!loadEverything && !loadInit) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [loadEverything, loadInit]);
 
   //For the search function
   const checkData = (value) => {

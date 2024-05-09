@@ -22,6 +22,7 @@ function EditMail() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(formValues),
       });
       const data = await response.json();
@@ -105,7 +106,12 @@ function EditMail() {
           <button className="w-[147px] h-[58px] bg-[#322C2B] rounded-[6px] flex items-center justify-center text-white text-[18px] mr-[30px]">
             Save
           </button>
-          <div className="w-[147px] h-[58px] bg-[#CECECE] rounded-[6px] flex items-center justify-center text-[#586166] text-[18px]">
+          <div
+            className="w-[147px] h-[58px] bg-[#CECECE] rounded-[6px] flex items-center justify-center text-[#586166] text-[18px]"
+            onClick={() => {
+              navigate("/user/profile");
+            }}
+          >
             Cancel
           </div>
         </div>

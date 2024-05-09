@@ -31,6 +31,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(formValues),
       });
       const data = await response.json();
@@ -52,10 +53,11 @@ function Login() {
 
   const validate = async () => {
     const data = await fetchMockData();
+    console.log(data);
     if (data.message !== undefined) {
       const error = {};
       if (data.message === "User not found") {
-        error.user = "Username not found";
+        error.username = "Username not found";
       } else if (data.message === "Incorrect Password") {
         error.password = data.message;
       } else {
@@ -88,10 +90,11 @@ function Login() {
                 className="w-full h-[60px] border-[2.5px] p-[20px] rounded-[8px]
               border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none font-normal"
               />
+
+              <p className="font-medium text-[20px] text-red-700 mb-[30px]">
+                {formErrors.username}
+              </p>
             </div>
-            <p className="font-medium text-[20px] text-red-700 mb-[30px]">
-              {formErrors.username}
-            </p>
             <div className="mb-[30px] font-medium text-[24px]">
               <p className="mb-[12px]">Password</p>
               <input
@@ -103,11 +106,11 @@ function Login() {
                 className="w-full h-[60px] border-[2.5px] p-[20px] rounded-[8px]
               border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none"
               />
-            </div>
-            <p className="font-medium text-[20px] text-red-700 mb-[30px]">
-              {formErrors.password}
-            </p>
 
+              <p className="font-medium text-[20px] text-red-700 mb-[30px]">
+                {formErrors.password}
+              </p>
+            </div>
             <button
               type="submit"
               className="w-full h-[58px] bg-[#322C2B] rounded-[6px] text-[18px]

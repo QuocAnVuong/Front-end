@@ -1,12 +1,16 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
-import { LoginContext, LoginPageContext } from "../../context/ContextProvider";
+import {
+  LoginContext,
+  LoginPageContext,
+  UserContext,
+} from "../../context/ContextProvider";
 
 function NavBar() {
   const { duringLogin, setDuringLogin } = useContext(LoginPageContext);
   const { isLogin, setIsLogin } = useContext(LoginContext);
-
+  const { user } = useContext(UserContext);
   return (
     //lg: 1023 xl: 1279 2xl: 1535
     <div
@@ -51,7 +55,11 @@ function NavBar() {
           <p className="cursor-pointer">About</p>
         </div>
         {duringLogin ? null : isLogin ? (
-          <img src="/img/profile.png" alt=""></img>
+          <img
+            src={user.ProfileImg}
+            alt=""
+            className="w-[50px] h-[50px] rounded-full"
+          ></img>
         ) : (
           <div className="w-auto h-auto">
             <Link

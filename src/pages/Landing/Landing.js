@@ -21,6 +21,7 @@ function Landing() {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
         });
         setLoading(true);
         const data = await response.json();
@@ -33,8 +34,12 @@ function Landing() {
         console.error("There was a problem fetching the mock data:", error);
       }
     };
-    fetchMockData();
-  }, [setUser, setIsLogin, user]);
+    if (!isLogin) {
+      fetchMockData();
+    } else {
+      setLoading(false);
+    }
+  }, [setUser, setIsLogin, isLogin, user]);
 
   return (
     <div className="min-w-screen min-h-screen">
@@ -92,7 +97,11 @@ function Landing() {
               </div>
               {isLogin ? (
                 <Link to={"/user/profile"}>
-                  <img src="/img/profile.png" alt="" />
+                  <img
+                    src={user.ProfileImg}
+                    alt=""
+                    className="w-[50px] h-[50px] rounded-full cursor-pointer"
+                  />
                 </Link>
               ) : (
                 <div className="flex items-center">
