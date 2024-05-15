@@ -100,7 +100,9 @@ function Landing() {
                   <img
                     src={user.ProfileImg}
                     alt=""
-                    className="w-[50px] h-[50px] rounded-full cursor-pointer"
+                    className="w-[26px] xl:w-[32.5px] 2xl:w-[39px] 3xl:w-[50px] 
+                    h-[26px] xl:h-[32.5px] 2xl:h-[39px] 3xl:h-[50px] 
+                    rounded-full cursor-pointer"
                   />
                 </Link>
               ) : (

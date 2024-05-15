@@ -80,20 +80,44 @@ function UserMainPage() {
         <div className="h-screen flex flex-col">
           <NavBar />
           <div className="flex-grow flex">
-            <div className="w-[340px] h-full bg-[#E4C59E] border-t border-black px-[25px] py-[20px] flex flex-col">
-              <div className="flex mb-[60px]">
+            <div
+              className="h-full bg-[#E4C59E] border-t flex flex-col border-black 
+            px-[13px] xl:px-[16px] 2xl:px-[19.5px] 3xl:px-[25px] 
+            py-[10.5px] xl:py-[13px] 2xl:py-[15.5px] 3xl:py-[20px] 
+            w-[177px] xl:w-[222px] 2xl:w-[266.5px] 3xl:w-[340px]"
+            >
+              <div
+                className="flex 
+              mb-[31px] xl:mb-[39px] 2xl:mb-[47px] 3xl:mb-[60px]"
+              >
                 <img
                   src={user.ProfileImg}
                   alt=""
-                  className="w-[50px] h-[50px] mr-[15px] rounded-full"
+                  className="w-[26px] xl:w-[32.5px] 2xl:w-[39px] 3xl:w-[50px] 
+                    h-[26px] xl:h-[32.5px] 2xl:h-[39px] 3xl:h-[50px] 
+                    mr-[8px] xl:mr-[9.5px] 2xl:mr-[11.5px] 3xl:mr-[15px] 
+                    rounded-full"
                 />
                 <div className="truncate">
-                  <p className="font-medium text-[24px]">{user.Username}</p>
-                  <p className="font-extralight text-[16px]">{user.Email}</p>
+                  <p
+                    className="font-medium 
+                  text-[12.5px] xl:text-[15.5px] 2xl:text-[19px] 3xl:text-[24px]"
+                  >
+                    {user.Username}
+                  </p>
+                  <p
+                    className="font-extralight 
+                  text-[8px] xl:text-[10.5px] 2xl:text-[12.5px] 3xl:text-[16px]"
+                  >
+                    {user.Email}
+                  </p>
                 </div>
               </div>
               <div className="flex-grow">
-                <div className="flex flex-col gap-y-[15px]">
+                <div
+                  className="flex flex-col 
+                gap-y-[8px] xl:gap-y-[9.5px] 2xl:gap-y-[11.5px] 3xl:gap-y-[15px]"
+                >
                   <MenuItem
                     link={"/user/profile"}
                     content={"Profile"}
@@ -136,7 +160,10 @@ function UserMainPage() {
                 </div>
               </div>
               <div
-                className="w-full h-[58px] flex items-center pl-[44px] hover:bg-[#803D3B] rounded-[6px]"
+                className="w-full flex items-center hover:bg-[#803D3B] 
+                h-[30px] xl:h-[38px] 2xl:h-[45.5px] 3xl:h-[58px] 
+                rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
+                pl-[23px] xl:pl-[28px] 2xl:pl-[34.5px] 3xl:pl-[44px]"
                 onClick={handleLogout}
               >
                 Log out

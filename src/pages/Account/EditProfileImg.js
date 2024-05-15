@@ -51,18 +51,39 @@ function EditProfileImg() {
   };
 
   return (
-    <div className=" flex flex-col flex-grow items-center justify-center px-[226px] gap-y-[30px]">
+    <div
+      className=" flex flex-col flex-grow items-center justify-center 
+    px-[118px] xl:px-[147.5px] 2xl:px-[177px] 3xl:px-[226px] 
+    gap-y-[15.5px] xl:gap-y-[19.5px] 2xl:gap-y-[23.5px] 3xl:gap-y-[30px]"
+    >
       <form onSubmit={handleSubmit}>
-        <div className="px-[25px] py-[30px] border border-[#322C2B] rounded-20px gap-y-[40px] flex flex-col items-center justify-center mb-[30px]">
-          <p className="font-bold text-[56px]">Profile picture</p>
+        <div
+          className="border border-[#322C2B] rounded-20px flex flex-col items-center justify-center 
+        mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px] 
+        gap-y-[21px] xl:gap-y-[26px] 2xl:gap-y-[31px] 3xl:gap-y-[40px]
+        px-[13px] xl:px-[16px] 2xl:px-[19.5px] 3xl:px-[25px] 
+        py-[15.5px] xl:py-[19.5px] 2xl:py-[23.5px] 3xl:py-[30px]"
+        >
+          <p
+            className="font-bold
+          text-[29px] xl:text-[36.5px] 2xl:text-[44px] 3xl:text-[56px]"
+          >
+            Profile picture
+          </p>
           <img
             src={imagePreview}
             alt=""
-            className="w-[300px] h-[300px] rounded-full"
+            className="w-[157px] xl:w-[196px] 2xl:w-[235px] 3xl:w-[300px] 
+            h-[157px] xl:h-[196px] 2xl:h-[235px] 3xl:h-[300px] rounded-full"
           />
           <label
             htmlFor="Image"
-            className="w-[204px] h-[38px] bg-[#322C2B] text-white rounded-[3px] font-[16px] flex items-center justify-center cursor-pointer"
+            className="bg-[#322C2B] text-white flex items-center justify-center cursor-pointer truncate
+            w-[106.5px] xl:w-[133px] 2xl:w-[160px] 3xl:w-[204px] 
+            h-[20px] xl:h-[25px] 2xl:h-[30px] 3xl:h-[38px] 
+            rounded-[1.5px] xl:rounded-[2px] 2xl:rounded-[2.5px] 3xl:rounded-[3px] 
+            font-[8px] xl:font-[10.5px] 2xl:font-[12.5px] 3xl:font-[16px]
+            text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]"
             onClick={() => {
               document.querySelector(".input-field").click();
             }}
@@ -79,12 +100,25 @@ function EditProfileImg() {
           </label>
           <input name="purpose" value="2" className="hidden" readOnly />
         </div>
-        <div className="flex gap-x-[30px] items-center justify-center">
-          <button className="w-[147px] h-[58px] rounded-[6px] bg-[#322C2B] text-white text-[18px] flex items-center justify-center">
+        <div
+          className="flex items-center justify-center
+         gap-x-[15.5px] xl:gap-x-[19.5px] 2xl:gap-x-[23.5px] 3xl:gap-x-[30px]"
+        >
+          <button
+            className="bg-[#322C2B] text-white flex items-center justify-center cursor-pointer
+          w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 
+          h-[30px] xl:h-[37.8px] 2xl:h-[45.5px] 3xl:h-[58px] 
+          rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
+          text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]"
+          >
             Save
           </button>
           <div
-            className="w-[147px] h-[58px] rounded-[6px] bg-[#CECECE] text-[18px] flex items-center justify-center"
+            className="bg-[#CECECE] flex items-center justify-center cursor-pointer
+          w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 
+          h-[30px] xl:h-[37.8px] 2xl:h-[45.5px] 3xl:h-[58px] 
+          rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
+          text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]"
             onClick={() => {
               navigate("/user/profile");
             }}
@@ -93,19 +127,6 @@ function EditProfileImg() {
           </div>
         </div>
       </form>
-      {/*<label
-        htmlFor="Image"
-        className="w-[204px] h-[38px] bg-black text-white rounded-[3px] font-[16px]"
-      >
-        Upload New Picture
-        <input
-          type="file"
-          onChange={handleImageChange}
-          accept="image/*"
-          id="Image"
-          className="hidden"
-        />
-      </label>*/}
     </div>
   );
 }
