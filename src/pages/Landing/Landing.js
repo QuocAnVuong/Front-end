@@ -42,7 +42,7 @@ function Landing() {
   }, [setUser, setIsLogin, isLogin, user]);
 
   return (
-    <div className="min-w-screen min-h-screen">
+    <div className="min-w-screen h-screen flex flex-col">
       <img
         src="img/Landing-page.png"
         alt=""
@@ -62,7 +62,7 @@ function Landing() {
       >
         Start cooking with what you have, effortlessly. Try My Fridge today
       </p>
-      <div className="w-full flex items-center justify-center">
+      <div className="flex justify-center flex-grow-1 w-full h-full">
         {loading ? (
           <div> Loading ...</div>
         ) : (

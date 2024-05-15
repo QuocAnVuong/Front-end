@@ -182,7 +182,7 @@ function SearchResult() {
 
   //lg:1024 xl:1280 2xl:1536
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <NavBar />
       <p
         className="font-bold 
@@ -197,8 +197,8 @@ function SearchResult() {
         <div>Loading...</div>
       ) : (
         <div
-          className="grid grid-cols-2 justify-between items-center 
-      px-[30px] xl:px-[37px] 2xl:px-[44.5px] 3xl:px-[57px]"
+          className="flex-grow-1 flex justify-center h-full
+      gap-x-[30px] xl:gap-x-[37px] 2xl:gap-x-[44.5px] 3xl:gap-x-[57px]"
         >
           <div
             className="border-4 border-b-0
@@ -359,11 +359,10 @@ function SearchResult() {
             </form>
           </div>
           <div
-            className="border-4 border-b-0
+            className="border-4 border-b-0 h-full 
         rounded-t-[10.5px] xl:rounded-t-[13px] 2xl:rounded-t-[15.5px] 3xl:rounded-t-[20px] 
         border-[#803D3B] 
         w-[473px] xl:w-[592px] 2xl:w-[710px] 3xl:w-[907px] 
-        h-full 
         px-[37px] xl:px-[46px] 2xl:px-[55.5px] 3xl:px-[71px]"
           >
             <div>
