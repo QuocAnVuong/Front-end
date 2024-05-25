@@ -57,11 +57,13 @@ function Recipe() {
         setLoadLike(true);
         setLiked(false);
         const data = await response.json();
-        console.log(data);
-        if (data & (data.length > 0)) {
-          const data2 = data.filter((item) => item.ArticleID === articleID);
-          if (data2 & (data2.length > 0)) {
+        if (data.length > 0) {
+          const data2 = data.filter(
+            (item) => item.ArticleID === Number(articleID)
+          );
+          if (data2.length > 0) {
             setLiked(true);
+            setIsLiking(true);
             console.log("User has liked this post");
           } else {
             console.log("User has not liked this post");
@@ -80,9 +82,10 @@ function Recipe() {
 
     if (!isLogin) {
       fetchMockData();
-      fetchLikeData();
+      setLoadLike(false);
     } else {
       setLoadInit(false);
+      fetchLikeData();
     }
   }, [setUser, setIsLogin, isLogin, user, articleID]);
 
@@ -206,18 +209,26 @@ function Recipe() {
           <div className="w-[700px] text-[#322C2B]">
             <div className="flex items-center justify-between">
               <p className="font-bold text-[72px]">{recipe.Title}</p>
-              <img
-                src={
-                  liked ? "/img/bookmark-yellow.png" : "/img/bookmark-white.png"
-                }
-                alt=""
-                className="w-[50px] h-[50px]"
-                onClick={() => {
-                  if (!isLiking) {
-                    handleLike();
+              {isLogin ? (
+                <img
+                  src={
+                    liked
+                      ? "/img/bookmark-yellow.png"
+                      : "/img/bookmark-white.png"
                   }
-                }}
-              />
+                  alt=""
+                  className="w-[50px] h-[50px]"
+                  onClick={() => {
+                    if (!isLiking) {
+                      handleLike();
+                    } else {
+                      console.log("User has liked this post");
+                    }
+                  }}
+                />
+              ) : (
+                <div />
+              )}
             </div>
             <div className="font-normal text-[18px] mt-[25px]">
               Short description: <span>{recipe.Description}</span>
