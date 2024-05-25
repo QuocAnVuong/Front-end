@@ -3,8 +3,10 @@ import ContextProvider from "./context/ContextProvider";
 import EditMail from "./pages/Account/EditMail";
 import EditName from "./pages/Account/EditName";
 import EditProfileImg from "./pages/Account/EditProfileImg";
+import EditWallet from "./pages/Account/EditWallet";
 import UserMainPage from "./pages/Account/UserMainPage";
 import UserProfile from "./pages/Account/UserProfile";
+import Wallet from "./pages/Account/Wallet";
 import WriterSignup from "./pages/Account/WriterSignup";
 import Landing from "./pages/Landing/Landing";
 import Login from "./pages/Login/Login";
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: "/user/edit-image",
         element: <EditProfileImg />,
+      },
+      {
+        path: "/user/wallet",
+        element: <Wallet />,
+      },
+      {
+        path: "/user/edit-wallet",
+        element: <EditWallet />,
       },
     ],
   },

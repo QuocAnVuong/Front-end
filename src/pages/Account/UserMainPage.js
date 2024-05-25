@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import { LoginContext, UserContext } from "../../context/ContextProvider";
 import MenuItem from "../../components/MenuItem/MenuItem";
