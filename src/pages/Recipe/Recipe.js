@@ -12,8 +12,10 @@ function Recipe() {
   const [loadInit, setLoadInit] = useState(true);
   const [isLoading, setLoading] = useState(true);
   const [recipe, setRecipe] = useState(null);
-  const [isMark, setMark] = useState(false);
   const [ingredientsList, setIngredientsList] = useState([]);
+  const [loadLike, setLoadLike] = useState(true);
+  const [liked, setLiked] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
 
   useEffect(() => {
     const fetchMockData = async () => {
@@ -33,20 +35,60 @@ function Recipe() {
         }
         setLoadInit(false);
       } catch (error) {
-        console.error("There was a problem fetching the mock data:", error);
+        console.error(
+          "There was a problem fetching the init data in Recipe.js:",
+          error
+        );
       }
     };
+
+    const fetchLikeData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/user/get-liked-article",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        setLoadLike(true);
+        setLiked(false);
+        const data = await response.json();
+        console.log(data);
+        if (data & (data.length > 0)) {
+          const data2 = data.filter((item) => item.ArticleID === articleID);
+          if (data2 & (data2.length > 0)) {
+            setLiked(true);
+            console.log("User has liked this post");
+          } else {
+            console.log("User has not liked this post");
+          }
+        } else {
+          console.log("User has not liked this post");
+        }
+        setLoadLike(false);
+      } catch (error) {
+        console.error(
+          "There was a problem fetching the like data in Recipe.js:",
+          error
+        );
+      }
+    };
+
     if (!isLogin) {
       fetchMockData();
+      fetchLikeData();
     } else {
       setLoadInit(false);
     }
-  }, [setUser, setIsLogin, isLogin, user]);
+  }, [setUser, setIsLogin, isLogin, user, articleID]);
 
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        console.log(articleID);
         const requestBody = {
           ArticleID: articleID,
         };
@@ -60,17 +102,15 @@ function Recipe() {
             body: JSON.stringify(requestBody),
           }
         );
-        console.log(response);
         setLoadArticle(true);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
         const data = await response.json();
-        console.log(data);
         setRecipe(data[0]);
         setLoadArticle(false);
       } catch (error) {
-        console.error("There was a problem fetching the mock data:", error);
+        console.error(
+          "There was a problem fetching the article data in Recipe.js:",
+          error
+        );
       }
     };
 
@@ -82,17 +122,18 @@ function Recipe() {
             "Content-Type": "application/json",
           },
         });
-        console.log(response);
         setLoadIngredient(true);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data);
         setIngredientsList(data.data.ingredients);
         setLoadIngredient(false);
       } catch (error) {
-        console.error("There was a problem fetching the mock data:", error);
+        console.error(
+          "There was a problem fetching the ingredient data in Recipe.js:",
+          error
+        );
       }
     };
     fetchMockData();
@@ -100,12 +141,12 @@ function Recipe() {
   }, [articleID]);
 
   useEffect(() => {
-    if (!loadArticle && !loadIngredient && !loadInit) {
+    if (!loadArticle && !loadIngredient && !loadInit && !loadLike) {
       setLoading(false);
     } else {
       setLoading(true);
     }
-  }, [loadArticle, loadIngredient, loadInit]);
+  }, [loadArticle, loadIngredient, loadInit, loadLike]);
 
   const getIngredientByID = (id) => {
     const res = ingredientsList.filter((ingredient) => {
@@ -123,6 +164,38 @@ function Recipe() {
     return formattedDate;
   };
 
+  const handleLike = () => {
+    const fetchUserLikeData = async () => {
+      try {
+        setIsLiking(true);
+        console.log(articleID);
+        const requestBody = {
+          ArticleID: articleID,
+        };
+        const response = await fetch(
+          "http://localhost:3000/user/like-article",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(requestBody),
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        setLiked(true);
+      } catch (error) {
+        console.error(
+          "There was a problem fetching the user like data in Recipe.js:",
+          error
+        );
+      }
+    };
+    fetchUserLikeData();
+  };
+
   return (
     <div>
       <NavBar />
@@ -135,14 +208,14 @@ function Recipe() {
               <p className="font-bold text-[72px]">{recipe.Title}</p>
               <img
                 src={
-                  isMark
-                    ? "/img/bookmark-yellow.png"
-                    : "/img/bookmark-white.png"
+                  liked ? "/img/bookmark-yellow.png" : "/img/bookmark-white.png"
                 }
                 alt=""
                 className="w-[50px] h-[50px]"
                 onClick={() => {
-                  setMark(!isMark);
+                  if (!isLiking) {
+                    handleLike();
+                  }
                 }}
               />
             </div>
@@ -206,71 +279,6 @@ function Recipe() {
             </article>
           </div>
         </div>
-        /*<div className="my-[80px] mx-[340px]">
-          <div className="flex justify-between mb-[50px]">
-            <img src={recipe.Image} alt="" className="w-[541px] h-[320px]" />
-            <div className="w-[615px]">
-              <div className="flex justify-between  items-center mb-[28px]">
-                <div className="text-[#404040] font-semibold text-[48px] w-11/12 break-all">
-                  {recipe.Title}
-                </div>
-                <img
-                  src={
-                    isMark
-                      ? "/img/bookmark-yellow.png"
-                      : "/img/bookmark-white.png"
-                  }
-                  alt=""
-                  className="w-[50px] h-[50px]"
-                  onClick={() => {
-                    setMark(!isMark);
-                  }}
-                />
-              </div>
-              <div className="flex items-center mb-[28px]">
-                <div className="flex mr-[50px] ">
-                  <img
-                    src="/img/clock.png"
-                    alt=""
-                    className="w-[30px] h-[30px]"
-                  />
-                  <div className="text-[#404040] font-medium text-[24px] ml-[30px]">
-                    {recipe.Duration} minutes
-                  </div>
-                </div>
-                <div className="flex">
-                  <img
-                    src="/img/user.png"
-                    alt=""
-                    className="w-[30px] h-[30px]"
-                  />
-                  <div className="text-[#404040] font-medium text-[24px] ml-[30px]">
-                    {recipe.Serving} people
-                  </div>
-                </div>
-              </div>
-              <article className="text-wrap text-[#404040] font-normal text-[20px]">
-                {recipe.Content}
-              </article>
-            </div>
-          </div>
-          <div>
-            <p className="text-[#404040] font-semibold text-[48px]">
-              Ingredients
-            </p>
-            <ul className="list-disc">
-              {recipe.IngredientID.map((ingredient, id) => (
-                <li key={id} className="font-normal text-[#404040] text-[20px]">
-                  {getIngredientByID(ingredient)}
-                </li>
-              ))}
-            </ul>
-            <p className="text-[#404040] font-semibold text-[48px]">
-              Directions
-            </p>
-            <article>{recipe.Content}</article>
-          </div>
-        </div>*/
       )}
     </div>
   );

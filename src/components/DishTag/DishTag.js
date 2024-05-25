@@ -13,7 +13,7 @@ function DishTag({ dish }) {
     "
       to={`/search-result/${dish.ArticleID}`}
     >
-      <img src="image.png" alt="" className="w-full h-auto" />
+      <img src={dish.Image} alt="" className="w-full h-auto rounded-[8px]" />
       <div className="w-full h-auto">
         <p
           className="text-[#404040] truncate
