@@ -55,11 +55,13 @@ function NavBar() {
           <p className="cursor-pointer">About</p>
         </div>
         {duringLogin ? null : isLogin ? (
-          <img
-            src={user.ProfileImg}
-            alt=""
-            className="w-[50px] h-[50px] rounded-full"
-          ></img>
+          <Link to={"/user/profile"}>
+            <img
+              src={user.ProfileImg}
+              alt=""
+              className="w-[50px] h-[50px] rounded-full"
+            />
+          </Link>
         ) : (
           <div className="w-auto h-auto">
             <Link

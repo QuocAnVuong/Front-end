@@ -217,7 +217,7 @@ function Recipe() {
                       : "/img/bookmark-white.png"
                   }
                   alt=""
-                  className="w-[50px] h-[50px]"
+                  className="w-[50px] h-[50px] cursor-pointer"
                   onClick={() => {
                     if (!isLiking) {
                       handleLike();
