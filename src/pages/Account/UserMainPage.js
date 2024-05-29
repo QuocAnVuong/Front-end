@@ -57,7 +57,6 @@ function UserMainPage() {
         credentials: "include",
       });
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error("There was a problem fetching the mock data:", error);
@@ -123,6 +122,12 @@ function UserMainPage() {
                     content={"Profile"}
                     isActive={activeMenuItem === "Profile"}
                     handleClick={() => handleMenuItemClick("Profile")}
+                  />
+                  <MenuItem
+                    link={"/user/liked"}
+                    content={"Liked article"}
+                    isActive={activeMenuItem === "Liked article"}
+                    handleClick={() => handleMenuItemClick("Liked article")}
                   />
                   {!user.isWriter ? (
                     <div className="font-semibold">

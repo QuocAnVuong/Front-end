@@ -4,6 +4,8 @@ import EditMail from "./pages/Account/EditMail";
 import EditName from "./pages/Account/EditName";
 import EditProfileImg from "./pages/Account/EditProfileImg";
 import EditWallet from "./pages/Account/EditWallet";
+import LikedArticle from "./pages/Account/LikedArticle";
+import SeeArticle from "./pages/Account/SeeArticle";
 import UserMainPage from "./pages/Account/UserMainPage";
 import UserProfile from "./pages/Account/UserProfile";
 import Wallet from "./pages/Account/Wallet";
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
       {
         path: "/user/edit-wallet",
         element: <EditWallet />,
+      },
+      {
+        path: "/user/article",
+        element: <SeeArticle />,
+      },
+      {
+        path: "/user/liked",
+        element: <LikedArticle />,
       },
     ],
   },
