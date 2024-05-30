@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
 
 function LikedArticle() {

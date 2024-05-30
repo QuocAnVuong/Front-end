@@ -19,6 +19,9 @@ function EditProfileImg() {
     }
   };
   const fetchData = async (e) => {
+    const form = new FormData(e.target);
+    console.log(e.target);
+    console.log(form);
     try {
       const response = await fetch("http://localhost:3000/writer/upload", {
         method: "POST",

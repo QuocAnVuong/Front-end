@@ -9,6 +9,7 @@ import SeeArticle from "./pages/Account/SeeArticle";
 import UserMainPage from "./pages/Account/UserMainPage";
 import UserProfile from "./pages/Account/UserProfile";
 import Wallet from "./pages/Account/Wallet";
+import WriteArticle from "./pages/Account/WriteArticle";
 import WriterSignup from "./pages/Account/WriterSignup";
 import Landing from "./pages/Landing/Landing";
 import Login from "./pages/Login/Login";
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: "/user/liked",
         element: <LikedArticle />,
+      },
+      {
+        path: "/user/write-article",
+        element: <WriteArticle />,
       },
     ],
   },

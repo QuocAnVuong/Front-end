@@ -109,6 +109,7 @@ function Recipe() {
         const data = await response.json();
         setRecipe(data[0]);
         setLoadArticle(false);
+        console.log(data[0]);
       } catch (error) {
         console.error(
           "There was a problem fetching the article data in Recipe.js:",

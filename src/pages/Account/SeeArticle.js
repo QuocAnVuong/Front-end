@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
+import { Link } from "react-router-dom";
 
 function SeeArticle() {
   const [menu, setMenu] = useState([]);
@@ -116,12 +116,14 @@ function SeeArticle() {
         mb-[30px] xl:mb-[37px] 2xl:mb-[44.5px] 3xl:mb-[57px]"
       >
         <div>Your Articles {`(${number})`}</div>
-        <img
-          src="/img/edit.png"
-          alt=""
-          className="w-[21px] xl:w-[26px] 2xl:w-[31px] 3xl:w-[40px] 
+        <Link to={"/user/write-article"}>
+          <img
+            src="/img/edit.png"
+            alt=""
+            className="w-[21px] xl:w-[26px] 2xl:w-[31px] 3xl:w-[40px] 
               h-[21px] xl:h-[26px] 2xl:h-[31px] 3xl:h-[40px]"
-        />
+          />
+        </Link>
       </div>
       <div
         className="grid grid-cols-4 
