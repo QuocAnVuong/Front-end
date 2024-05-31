@@ -1,41 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/ContextProvider";
 import IngredientTag from "../../components/IngredientTag/IngredientTag";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FoodTag from "../../components/FoodTag/FoodTag";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ActiveContext } from "./UserMainPage";
 
-function WriteArticle() {
-  const initialState = {
-    Title: "",
-    Description: "",
-    Image: "",
-    Duration: 0,
-    Serving: 0,
-    Content: "",
-    Flavour: [],
-    IngredientID: [],
-    Quantity: [],
-    Style: [],
-  };
-  const publicationDate = new Date();
-  const [articleValues, setArticleValue] = useState(initialState);
-  const { user } = useContext(UserContext);
-  const userID = user.UserID;
+function EditArticle() {
+  const { articleID } = useParams();
+  const [articleValues, setArticleValue] = useState({});
   const [ingredientsList, setIngredientsList] = useState([]);
   const [flavorsList, setFlavorsList] = useState([]);
   const [stylesList, setStylesList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadIngredient, setLoadIngredient] = useState(true);
+  const [loadArticle, setLoadArticle] = useState(false);
   const [result, setResult] = useState([]);
   const [search, setSearch] = useState("");
   const [imagePreview, setImagePreview] = useState(articleValues.Image);
   const navigate = useNavigate();
   const { setActiveMenuItem } = useContext(ActiveContext);
+  const [goSendData, setSendData] = useState(false);
 
   useEffect(() => {
-    const fetchMockData = async () => {
+    const fetchEverythingData = async () => {
       try {
         const response = await fetch("http://localhost:3000/get-everything", {
           method: "POST",
@@ -43,12 +32,12 @@ function WriteArticle() {
             "Content-Type": "application/json",
           },
         });
-        setLoading(true);
+        setLoadIngredient(true);
         const data = await response.json();
         setIngredientsList(data.data.ingredients);
         setFlavorsList(data.data.flavours);
         setStylesList(data.data.styles);
-        setLoading(false);
+        setLoadIngredient(false);
       } catch (error) {
         console.error(
           "There was a problem fetching the everything data:",
@@ -56,8 +45,48 @@ function WriteArticle() {
         );
       }
     };
-    fetchMockData();
+
+    const fetchData = async () => {
+      try {
+        const requestBody = {
+          ArticleID: articleID,
+        };
+        const response = await fetch(
+          "http://localhost:3000/user/get-one-article",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+        console.log(response);
+        setLoadArticle(true);
+        const data = await response.json();
+        console.log(data);
+        data[0].Style = data[0].Style.filter((value) => value !== 0);
+        data[0].Flavour = data[0].Flavour.filter((value) => value !== 0);
+        setArticleValue(data[0]);
+        setLoadArticle(false);
+      } catch (error) {
+        console.error(
+          "There was a problem fetching the everything data:",
+          error
+        );
+      }
+    };
+
+    fetchEverythingData();
+    fetchData();
   }, []);
+  useEffect(() => {
+    if (!loadArticle && !loadIngredient) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [loadArticle, loadIngredient]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,14 +109,17 @@ function WriteArticle() {
   const fetchArticleData = async () => {
     console.log(articleValues);
     try {
-      const response = await fetch("http://localhost:3000/writer/add-article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(articleValues),
-      });
+      const response = await fetch(
+        "http://localhost:3000/writer/update-article",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(articleValues),
+        }
+      );
       const data = await response.json();
       return data;
     } catch (error) {
@@ -100,23 +132,25 @@ function WriteArticle() {
     const fileInput = document.getElementById("image"); // Access the file input by its ID
     if (fileInput.files.length > 0) {
       formData.append("image", fileInput.files[0]); // Append the file to FormData
+      formData.append("purpose", 2);
+      const imageFetch = await fetchImageData(formData);
+      setArticleValue({
+        ...articleValues,
+        Image: imageFetch.url,
+      });
     }
-    formData.append("purpose", 2);
-
-    const imageFetch = await fetchImageData(formData);
-    setArticleValue({
-      ...articleValues,
-      Image: imageFetch.url,
-    });
-    setActiveMenuItem("Your article");
-    navigate("/user/article");
+    setSendData(true);
   };
   useEffect(() => {
-    const sendData = async () => {
+    const doSendData = async () => {
       const data = await fetchArticleData();
     };
-    if (articleValues.Image !== "") sendData();
-  }, [articleValues.Image]);
+    if (goSendData) {
+      doSendData();
+      setActiveMenuItem("Your article");
+      navigate("/user/article");
+    }
+  }, [goSendData]);
 
   //For the search function
   const checkData = (value) => {
@@ -255,7 +289,9 @@ function WriteArticle() {
     console.log(articleValues);
   }, [articleValues]);*/
 
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <form
       className="flex flex-col flex-grow items-center justify-center 
 px-[118px] xl:px-[147.5px] 2xl:px-[177px] 3xl:px-[226px]
@@ -263,11 +299,12 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
 "
       onSubmit={handleSubmit}
     >
+      <div>Edit Article</div>
       <div
         className="text-[12.5px] xl:text-[15px] 2xl:text-[19px] 3xl:text-[24px]
-          mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
-          w-full
-          "
+        mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
+        w-full
+        "
       >
         <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
           Title*
@@ -279,48 +316,48 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           value={articleValues.Title}
           onChange={handleChange}
           className="w-full border-[2.5px]
-              border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
-              h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
-              p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
-              rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
+            border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
+            h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
+            p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
+            rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
           required
         />
       </div>
       <div className="w-full">
         <div
           className=" relative 
-              w-full
-              h-[38px] xl:h-[47.5px] 2xl:h-[57px] 3xl:h-[73px]  
-              flex items-center justify-center
-              p-[7px] xl:p-[9px] 2xl:p-[11px] 3xl:p-[14px] 
-              rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
-              border border-[#000] 
-              mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
+            w-full
+            h-[38px] xl:h-[47.5px] 2xl:h-[57px] 3xl:h-[73px]  
+            flex items-center justify-center
+            p-[7px] xl:p-[9px] 2xl:p-[11px] 3xl:p-[14px] 
+            rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
+            border border-[#000] 
+            mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
         >
           <img
             src={require("../../img/Search.png")}
             alt=""
             className="ml-[10.5px] xl:ml-[13px] 2xl:ml-[15.5px] 3xl:ml-[20px] 
-                  mr-[33px] xl:mr-[41px] 2xl:mr-[49px] 3xl:mr-[63px]
-                  w-[52px] xl:w-[65px] 2xl:w-[78px] 3xl:w-auto
-                  "
+                mr-[33px] xl:mr-[41px] 2xl:mr-[49px] 3xl:mr-[63px]
+                w-[52px] xl:w-[65px] 2xl:w-[78px] 3xl:w-auto
+                "
           />
           <input
             type="search"
             className="text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
-                  font-light justify-center border-none bg-transparent focus:outline-none"
+                font-light justify-center border-none bg-transparent focus:outline-none"
             placeholder="Add your ingredients"
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
           <div
             className="absolute 
-                top-[38px] xl:top-[47.5px] 2xl:top-[57px] 3xl:top-[73px] 
-                left-[-2.5px] xl:left-[-3px] 2xl:left-[-4px] 3xl:left-[-5px] 
-                z-10 text-center 
-                w-full
-                text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px]
-                bg-white opacity-100"
+              top-[38px] xl:top-[47.5px] 2xl:top-[57px] 3xl:top-[73px] 
+              left-[-2.5px] xl:left-[-3px] 2xl:left-[-4px] 3xl:left-[-5px] 
+              z-10 text-center 
+              w-full
+              text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px]
+              bg-white opacity-100"
           >
             <ul>
               {result.map((result) => (
@@ -348,42 +385,42 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
       </div>
       <div
         className="w-full flex justify-center
-        gap-x-[13px] xl:gap-x-[16px] 2xl:gap-x-[19.5px] 3xl:gap-x-[25px]"
+      gap-x-[13px] xl:gap-x-[16px] 2xl:gap-x-[19.5px] 3xl:gap-x-[25px]"
       >
         <div
           className="border-4
-        rounded-[10px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
-        border-[#803D3B] 
-        flex-1
-        px-[29px] xl:px-[36px] 2xl:px-[43px] 3xl:px-[55px]"
+      rounded-[10px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
+      border-[#803D3B] 
+      flex-1
+      px-[29px] xl:px-[36px] 2xl:px-[43px] 3xl:px-[55px]"
         >
           <p
             className="font-bold 
-          text-[22px] xl:text-[27.5px] 2xl:text-[33px] 3xl:text-[42px] 
-          text-center 
-          mt-[28px] xl:mt-[34.5px] 2xl:mt-[41.5px] 3xl:mt-[53px] 
-          mb-[30px] xl:mb-[37px] 2xl:mb-[44.5px] 3xl:mb-[57px]"
+        text-[22px] xl:text-[27.5px] 2xl:text-[33px] 3xl:text-[42px] 
+        text-center 
+        mt-[28px] xl:mt-[34.5px] 2xl:mt-[41.5px] 3xl:mt-[53px] 
+        mb-[30px] xl:mb-[37px] 2xl:mb-[44.5px] 3xl:mb-[57px]"
           >
             Dish Preference
           </p>
           <div>
             <div
               className="relative 
-            w-full
-            h-[38px] xl:h-[47px] 2xl:h-[57px] 3xl:h-[73px] 
-            mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
+          w-full
+          h-[38px] xl:h-[47px] 2xl:h-[57px] 3xl:h-[73px] 
+          mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
             >
               <select
                 name="flavor"
                 id="flavor"
                 className="border border-[#000] 
-                rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15px] 3xl:rounded-[20px] 
-                w-full 
-                h-[38px] xl:h-[47.5px] 2xl:h-[57px] 3xl:h-[73px] 
-                text-center 
-                text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
-                font-light cursor-pointer 
-                pr-[33px] xl:pr-[41px] 2xl:pr-[50px] 3xl:pr-[64px]"
+              rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15px] 3xl:rounded-[20px] 
+              w-full 
+              h-[38px] xl:h-[47.5px] 2xl:h-[57px] 3xl:h-[73px] 
+              text-center 
+              text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
+              font-light cursor-pointer 
+              pr-[33px] xl:pr-[41px] 2xl:pr-[50px] 3xl:pr-[64px]"
                 onChange={(e) => handleFlavorChange(e.target.value)}
               >
                 <option value="None">Select Flavor</option>
@@ -395,29 +432,29 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
               </select>
               <span
                 className="block bg-white h-5/6 
-              w-[33.5px] xl:w-[42px] 2xl:w-[50px] 3xl:w-16 
-              absolute top-1 right-1 
-              rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px]
-              pointer-events-none custom-arrow"
+            w-[33.5px] xl:w-[42px] 2xl:w-[50px] 3xl:w-16 
+            absolute top-1 right-1 
+            rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px]
+            pointer-events-none custom-arrow"
               ></span>
             </div>
             <div
               className="relative 
-            w-full
-            h-[38px] xl:h-[47px] 2xl:h-[57px] 3xl:h-[73px] 
-            mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
+          w-full
+          h-[38px] xl:h-[47px] 2xl:h-[57px] 3xl:h-[73px] 
+          mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
             >
               <select
                 name="type"
                 id="type"
                 className="border border-[#000] 
-                rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15px] 3xl:rounded-[20px] 
-                w-full
-                h-[38px] xl:h-[47.5px] 2xl:h-[57px] 3xl:h-[73px] 
-                text-center 
-                text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px]  
-                font-light cursor-pointer 
-                pr-[33px] xl:pr-[41px] 2xl:pr-[50px] 3xl:pr-[64px]"
+              rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15px] 3xl:rounded-[20px] 
+              w-full
+              h-[38px] xl:h-[47.5px] 2xl:h-[57px] 3xl:h-[73px] 
+              text-center 
+              text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px]  
+              font-light cursor-pointer 
+              pr-[33px] xl:pr-[41px] 2xl:pr-[50px] 3xl:pr-[64px]"
                 onChange={(e) => handleStyleChange(e.target.value)}
               >
                 <option value="None">Choose Dish Style</option>
@@ -429,28 +466,28 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
               </select>
               <span
                 className="block bg-white h-5/6 
-              w-[33.5px] xl:w-[42px] 2xl:w-[50px] 3xl:w-16 
-              absolute top-1 right-1 
-              rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
-              pointer-events-none custom-arrow"
+            w-[33.5px] xl:w-[42px] 2xl:w-[50px] 3xl:w-16 
+            absolute top-1 right-1 
+            rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
+            pointer-events-none custom-arrow"
               ></span>
             </div>
           </div>
         </div>
         <div
           className="border-4 h-full 
-        rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
-        border-[#803D3B] 
-        flex-1 
-        px-[37px] xl:px-[46px] 2xl:px-[55.5px] 3xl:px-[71px]"
+      rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15.5px] 3xl:rounded-[20px] 
+      border-[#803D3B] 
+      flex-1 
+      px-[37px] xl:px-[46px] 2xl:px-[55.5px] 3xl:px-[71px]"
         >
           <div>
             <p
               className="font-bold 
-            text-[22px] xl:text-[27.5px] 2xl:text-[33px] 3xl:text-[42px] 
-            text-center 
-            mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-5 
-            mt-[31px] xl:mt-[39px] 2xl:mt-[47px] 3xl:mt-[60px]"
+          text-[22px] xl:text-[27.5px] 2xl:text-[33px] 3xl:text-[42px] 
+          text-center 
+          mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-5 
+          mt-[31px] xl:mt-[39px] 2xl:mt-[47px] 3xl:mt-[60px]"
             >
               Flavor
             </p>
@@ -466,20 +503,20 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
             </div>
             <hr
               className="border-2 border-[#E4C59E] 
-            mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-[20px]"
+          mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-[20px]"
             />
           </div>
           <div
             className="relative 
-          pb-[15.5px] xl:pb-[19.5px] 2xl:pb-[23.5px] 3xl:pb-[30px] 
-          mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px] "
+        pb-[15.5px] xl:pb-[19.5px] 2xl:pb-[23.5px] 3xl:pb-[30px] 
+        mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px] "
           >
             <p
               className="font-bold 
-            text-[22px] xl:text-[27.5px] 2xl:text-[33px] 3xl:text-[42px] 
-            text-center 
-            mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-5 
-            mt-[31px] xl:mt-[39px] 2xl:mt-[47px] 3xl:mt-[60px]"
+          text-[22px] xl:text-[27.5px] 2xl:text-[33px] 3xl:text-[42px] 
+          text-center 
+          mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-5 
+          mt-[31px] xl:mt-[39px] 2xl:mt-[47px] 3xl:mt-[60px]"
             >
               Style of Dish:
             </p>
@@ -498,9 +535,9 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
       </div>
       <div
         className="text-[12.5px] xl:text-[15px] 2xl:text-[19px] 3xl:text-[24px]
-          mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
-          w-full
-          "
+        mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
+        w-full
+        "
       >
         <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
           Short Description
@@ -511,10 +548,10 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           value={articleValues.Description}
           onChange={handleChange}
           className="w-full border-[2.5px]
-              border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
-              h-[93px] xl:h-[117px] 2xl:h-[141px] 3xl:h-[180px]
-              p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
-              rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
+            border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
+            h-[93px] xl:h-[117px] 2xl:h-[141px] 3xl:h-[180px]
+            p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
+            rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
         />
       </div>
       <div className="flex justify-center items-center gap-x-7">
@@ -525,14 +562,13 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           accept="image/*"
           id="image"
           name="image"
-          required
         />
       </div>
       <div
         className="text-[12.5px] xl:text-[15px] 2xl:text-[19px] 3xl:text-[24px]
-          mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
-          w-full
-          "
+        mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
+        w-full
+        "
       >
         <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
           Number of Serving
@@ -545,17 +581,17 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           value={articleValues.Serving}
           onChange={handleChange}
           className="w-full border-[2.5px]
-              border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
-              h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
-              p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
-              rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
+            border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
+            h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
+            p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
+            rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
         />
       </div>
       <div
         className="text-[12.5px] xl:text-[15px] 2xl:text-[19px] 3xl:text-[24px]
-          mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
-          w-full
-          "
+        mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
+        w-full
+        "
       >
         <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
           Duration in Minutes
@@ -568,10 +604,10 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           value={articleValues.Duration}
           onChange={handleChange}
           className="w-full border-[2.5px]
-              border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
-              h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
-              p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
-              rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
+            border-[#803D3B] bg-[#F5F5DC] bg-opacity-75 focus:outline-none
+            h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
+            p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
+            rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
         />
       </div>
       <div className="w-full border-[2.5px] border-[#803D3B] flex">
@@ -599,10 +635,11 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
               </div>
               <div className="flex items-center font-normal text-[8px] gap-x-[13px]">
                 <div>
-                  Submitted by <span className="font-bold">{userID}</span>
+                  Submitted by{" "}
+                  <span className="font-bold">{articleID.UserID}</span>
                 </div>
                 <div>|</div>
-                <div>Published on {getDay(publicationDate)}</div>
+                <div>Published on {getDay(articleValues.PublicationDate)}</div>
               </div>
               <img
                 src={imagePreview}
@@ -656,20 +693,20 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
       <div className="w-full flex items-center justify-center">
         <button
           className="bg-[#322C2B] text-white flex items-center justify-center cursor-pointer
-          w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 
-          h-[30px] xl:h-[37.8px] 2xl:h-[45.5px] 3xl:h-[58px] 
-          rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
-          text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]
-          mr-[15.5px] xl:mr-[19.5px] 2xl:mr-[23.5px] 3xl:mr-[30px]"
+        w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 
+        h-[30px] xl:h-[37.8px] 2xl:h-[45.5px] 3xl:h-[58px] 
+        rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
+        text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]
+        mr-[15.5px] xl:mr-[19.5px] 2xl:mr-[23.5px] 3xl:mr-[30px]"
         >
           Add new Article
         </button>
         <div
           className="bg-[#CECECE] flex items-center justify-center cursor-pointer
-          w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 
-          h-[30px] xl:h-[37.8px] 2xl:h-[45.5px] 3xl:h-[58px] 
-          rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
-          text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]"
+        w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 
+        h-[30px] xl:h-[37.8px] 2xl:h-[45.5px] 3xl:h-[58px] 
+        rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
+        text-[9.5px] xl:text-[12px] 2xl:text-[14px] 3xl:text-[18px]"
           onClick={() => {
             navigate("/user/profile");
           }}
@@ -681,4 +718,4 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
   );
 }
 
-export default WriteArticle;
+export default EditArticle;

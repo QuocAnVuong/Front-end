@@ -1,5 +1,6 @@
 import "./App.css";
 import ContextProvider from "./context/ContextProvider";
+import EditArticle from "./pages/Account/EditArticle";
 import EditMail from "./pages/Account/EditMail";
 import EditName from "./pages/Account/EditName";
 import EditProfileImg from "./pages/Account/EditProfileImg";
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: "/user/write-article",
         element: <WriteArticle />,
+      },
+      {
+        path: "/user/edit-article/:articleID",
+        element: <EditArticle />,
       },
     ],
   },

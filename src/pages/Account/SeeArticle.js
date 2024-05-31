@@ -134,7 +134,21 @@ function SeeArticle() {
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          displayMenu.map((dish, id) => <DishTag dish={dish} key={id} />)
+          displayMenu.map((dish, id) => (
+            <div className="relative">
+              <DishTag dish={dish} key={id} />
+              <Link to={`/user/edit-article/${dish.ArticleID}`}>
+                <img
+                  src="/img/edit.png"
+                  alt=""
+                  className="w-[21px] xl:w-[26px] 2xl:w-[31px] 3xl:w-[40px] 
+              h-[21px] xl:h-[26px] 2xl:h-[31px] 3xl:h-[40px] absolute
+                bottom-1 right-1
+              "
+                />
+              </Link>
+            </div>
+          ))
         )}
       </div>
       <div
