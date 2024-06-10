@@ -13,13 +13,16 @@ function FoodTag({ value, id, handleDelete }) {
       mb-[29px] xl:mb-[36.5px] 2xl:mb-[44px] 3xl:mb-[56px]
         "
     >
-      <p
-        className="font-bold 
+      <div className="w-[75px] xl:w-[96px] 2xl:w-[117px] 3xl:w-[152px]">
+        <p
+          className="font-bold truncate
       text-[15.5px] xl:text-[19.5px] 2xl:text-[23.5px] 3xl:text-[30px] 
       text-white text-center"
-      >
-        {value}
-      </p>
+        >
+          {value}
+        </p>
+      </div>
+
       <img
         src={require("../../img/Minus.png")}
         alt=""

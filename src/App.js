@@ -7,6 +7,7 @@ import EditProfileImg from "./pages/Account/EditProfileImg";
 import EditWallet from "./pages/Account/EditWallet";
 import LikedArticle from "./pages/Account/LikedArticle";
 import SeeArticle from "./pages/Account/SeeArticle";
+import SeeRevenue from "./pages/Account/SeeRevenue";
 import UserMainPage from "./pages/Account/UserMainPage";
 import UserProfile from "./pages/Account/UserProfile";
 import Wallet from "./pages/Account/Wallet";
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: "/user/edit-article/:articleID",
         element: <EditArticle />,
+      },
+      {
+        path: "/user/income",
+        element: <SeeRevenue />,
       },
     ],
   },

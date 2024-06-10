@@ -58,7 +58,8 @@ function Landing() {
       <p
         className="font-medium text-[#322C2B] text-center
       text-[17px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px]
-      mt-[10.5px] xl:mt-[13px] 2xl:mt-[15.5px] 3xl:mt-[20px]"
+      mt-[10.5px] xl:mt-[13px] 2xl:mt-[15.5px] 3xl:mt-[20px]
+      mb-[31.5px] xl:mb-[39px] 2xl:mb-[46.5px] 3xl:mb-[60px]"
       >
         Start cooking with what you have, effortlessly. Try My Fridge today
       </p>

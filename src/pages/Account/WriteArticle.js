@@ -108,12 +108,12 @@ function WriteArticle() {
       ...articleValues,
       Image: imageFetch.url,
     });
-    setActiveMenuItem("Your article");
-    navigate("/user/article");
   };
   useEffect(() => {
     const sendData = async () => {
       const data = await fetchArticleData();
+      setActiveMenuItem("Your article");
+      navigate("/user/article");
     };
     if (articleValues.Image !== "") sendData();
   }, [articleValues.Image]);
