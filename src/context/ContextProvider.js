@@ -7,59 +7,77 @@ export const StyleContext = createContext(null);
 export const LoginContext = createContext(null);
 export const LoginPageContext = createContext(null);
 export const UserContext = createContext(null);
+export const AIContext = createContext(null);
+export const CourseContext = createContext(null);
 
 function ContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [flavors, setFlavors] = useState([]);
   const [styles, setStyles] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [duringLogin, setDuringLogin] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [fromSearch, setFromSearch] = useState(false);
 
   return (
-    <UserContext.Provider
+    <CourseContext.Provider
       value={{
-        user,
-        setUser,
+        courses,
+        setCourses,
       }}
     >
-      <LoginPageContext.Provider
+      <AIContext.Provider
         value={{
-          duringLogin,
-          setDuringLogin,
+          fromSearch,
+          setFromSearch,
         }}
       >
-        <LoginContext.Provider
+        <UserContext.Provider
           value={{
-            isLogin,
-            setIsLogin,
+            user,
+            setUser,
           }}
         >
-          <IngredientContext.Provider
+          <LoginPageContext.Provider
             value={{
-              ingredients,
-              setIngredients,
+              duringLogin,
+              setDuringLogin,
             }}
           >
-            <FlavorContext.Provider
+            <LoginContext.Provider
               value={{
-                flavors,
-                setFlavors,
+                isLogin,
+                setIsLogin,
               }}
             >
-              <StyleContext.Provider
+              <IngredientContext.Provider
                 value={{
-                  styles,
-                  setStyles,
+                  ingredients,
+                  setIngredients,
                 }}
               >
-                {children}
-              </StyleContext.Provider>
-            </FlavorContext.Provider>
-          </IngredientContext.Provider>
-        </LoginContext.Provider>
-      </LoginPageContext.Provider>
-    </UserContext.Provider>
+                <FlavorContext.Provider
+                  value={{
+                    flavors,
+                    setFlavors,
+                  }}
+                >
+                  <StyleContext.Provider
+                    value={{
+                      styles,
+                      setStyles,
+                    }}
+                  >
+                    {children}
+                  </StyleContext.Provider>
+                </FlavorContext.Provider>
+              </IngredientContext.Provider>
+            </LoginContext.Provider>
+          </LoginPageContext.Provider>
+        </UserContext.Provider>
+      </AIContext.Provider>
+    </CourseContext.Provider>
   );
 }
 

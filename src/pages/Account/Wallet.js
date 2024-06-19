@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../context/ContextProvider";
+import React, { useEffect, useState } from "react";
+//import { UserContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 
 function Wallet() {

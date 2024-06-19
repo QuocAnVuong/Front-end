@@ -9,13 +9,14 @@ import {
 
 function NavBar() {
   const { duringLogin, setDuringLogin } = useContext(LoginPageContext);
-  const { isLogin, setIsLogin } = useContext(LoginContext);
+  const { isLogin } = useContext(LoginContext);
   const { user } = useContext(UserContext);
   return (
     //lg: 1023 xl: 1279 2xl: 1535
     <div
       className="px-[135px] xl:px-[169px] 2xl:px-[203px] 3xl:px-[260px] 
     h-[69px] xl:h-[86px] 2xl:h-[103px] 3xl:h-[132px] 
+    border-b border-black
     nav-bar-img"
     >
       <div

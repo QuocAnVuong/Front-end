@@ -13,6 +13,7 @@ import UserProfile from "./pages/Account/UserProfile";
 import Wallet from "./pages/Account/Wallet";
 import WriteArticle from "./pages/Account/WriteArticle";
 import WriterSignup from "./pages/Account/WriterSignup";
+import ChatAI from "./pages/ChatAI/ChatAI";
 import Landing from "./pages/Landing/Landing";
 import Login from "./pages/Login/Login";
 import PasswordRecovery from "./pages/Login/PasswordRecovery";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/chatAI",
+    element: <ChatAI />,
   },
   {
     path: "/user",

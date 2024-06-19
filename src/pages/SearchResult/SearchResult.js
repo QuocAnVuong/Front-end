@@ -3,29 +3,35 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./SearchResult.css";
 import { useState } from "react";
 import FoodTag from "../../components/FoodTag/FoodTag";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   IngredientContext,
-  FlavorContext,
   StyleContext,
   LoginContext,
   UserContext,
+  AIContext,
+  CourseContext,
 } from "../../context/ContextProvider";
 
 function SearchResult() {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
   const { ingredients, setIngredients } = useContext(IngredientContext);
-  const { flavors, setFlavors } = useContext(FlavorContext);
+  //const { flavors, setFlavors } = useContext(FlavorContext);
+  const { courses, setCourses } = useContext(CourseContext);
   const { styles, setStyles } = useContext(StyleContext);
   const [ingredientsList, setIngredientsList] = useState([]);
-  const [flavorsList, setFlavorsList] = useState([]);
+  //const [flavorsList, setFlavorsList] = useState([]);
   const [stylesList, setStylesList] = useState([]);
+  const [coursesList, setCoursesList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [loadEverything, setLoadEverything] = useState(true);
   const [loadInit, setLoadInit] = useState(true);
   const { isLogin, setIsLogin } = useContext(LoginContext);
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [chatAI, setChatAi] = useState(false);
+  const { setFromSearch } = useContext(AIContext);
 
   useEffect(() => {
     const fetchMockData = async () => {
@@ -70,7 +76,8 @@ function SearchResult() {
         }
         const data = await response.json();
         setIngredientsList(data.data.ingredients);
-        setFlavorsList(data.data.flavours);
+        //setFlavorsList(data.data.flavours);
+        setCoursesList(data.data.course);
         setStylesList(data.data.styles);
         setLoadEverything(false);
       } catch (error) {
@@ -127,6 +134,25 @@ function SearchResult() {
   }
 
   //Choosing Flavor
+  const handleCourseChange = (value) => {
+    if (value !== "None") {
+      const valueNumber = parseInt(value, 10);
+      if (!courses.includes(value)) {
+        const tempCourse = [...courses, valueNumber];
+        setCourses(tempCourse);
+      }
+    }
+    selectElement("course", "None");
+  };
+  const getCourseByID = (id) => {
+    const res = coursesList.filter((course) => {
+      return course.id === id;
+    });
+    return res[0].course;
+  };
+
+  /*
+  //Choosing Flavor
   const handleFlavorChange = (value) => {
     if (value !== "None") {
       const valueNumber = parseInt(value, 10);
@@ -142,7 +168,8 @@ function SearchResult() {
       return flavor.FlavourID === id;
     });
     return res[0].Flavour;
-  };
+  };*/
+
   //Choosing Style
   const handleStyleChange = (value) => {
     if (value !== "None") {
@@ -167,17 +194,35 @@ function SearchResult() {
     });
     setIngredients(tempIngredients);
   };
+
+  const handleDeleteCourse = (value) => {
+    const tempCourse = courses.filter((course) => {
+      return course !== value;
+    });
+    setCourses(tempCourse);
+  };
+
+  /*
   const handleDeleteFlavors = (value) => {
     const tempFlavor = flavors.filter((flavor) => {
       return flavor !== value;
     });
     setFlavors(tempFlavor);
   };
+  */
   const handleDeleteStyles = (value) => {
     const tempStyle = styles.filter((style) => {
       return style !== value;
     });
     setStyles(tempStyle);
+  };
+
+  const handleSubmit = () => {
+    if (!chatAI) navigate("/search-result");
+    else {
+      setFromSearch(true);
+      navigate("/chatAI");
+    }
   };
 
   //lg:1024 xl:1280 2xl:1536
@@ -274,8 +319,8 @@ function SearchResult() {
             mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
               >
                 <select
-                  name="flavor"
-                  id="flavor"
+                  name="course"
+                  id="course"
                   className="border border-[#000] 
                 rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15px] 3xl:rounded-[20px] 
                 w-[420px] xl:w-[524px] 2xl:w-[629px] 3xl:w-[803px] 
@@ -284,12 +329,12 @@ function SearchResult() {
                 text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
                 font-light cursor-pointer 
                 pr-[33px] xl:pr-[41px] 2xl:pr-[50px] 3xl:pr-[64px]"
-                  onChange={(e) => handleFlavorChange(e.target.value)}
+                  onChange={(e) => handleCourseChange(e.target.value)}
                 >
-                  <option value="None">Select your preferred flavor</option>
-                  {flavorsList.map((flavor) => (
-                    <option value={flavor.FlavourID} key={flavor.FlavourID}>
-                      {flavor.Flavour}
+                  <option value="None">Select your preferred courses</option>
+                  {coursesList.map((course) => (
+                    <option value={course.id} key={course.id}>
+                      {course.course}
                     </option>
                   ))}
                 </select>
@@ -335,14 +380,17 @@ function SearchResult() {
               pointer-events-none custom-arrow"
                 ></span>
               </div>
-              <div
+              {/*<div
                 className="flex items-center 
             mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
               >
                 <input
                   type="checkbox"
                   id="vegetarian"
-                  className="
+                  name="vegetarian"
+                  checked={chatAI}
+                  onChange={() => setChatAi(!chatAI)}
+                  className="cursor-pointer
                 h-[18px] xl:h-[22px] 2xl:h-[26.5px] 3xl:h-[34px] 
                 w-[18px] xl:w-[22px] 2xl:w-[26.5px] 3xl:w-[34px] 
                 mr-[15.5px] xl:mr-[19.5px] 2xl:mr-[23.5px] 3xl:mr-[30px]"
@@ -353,9 +401,9 @@ function SearchResult() {
                 text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
                 font-light cursor-pointer"
                 >
-                  Are you a vegetarian?
+                  Use AI
                 </label>
-              </div>
+              </div>*/}
             </form>
           </div>
           <div
@@ -398,15 +446,15 @@ function SearchResult() {
             mb-[10.5px] xl:mb-[13px] 2xl:mb-[15.5px] 3xl:mb-5 
             mt-[31px] xl:mt-[39px] 2xl:mt-[47px] 3xl:mt-[60px]"
               >
-                Preferred Flavor
+                Preferred Courses
               </p>
               <div className="grid grid-cols-3">
-                {flavors.map((flavor) => (
+                {courses.map((course) => (
                   <FoodTag
-                    key={flavor}
-                    value={getFlavorByID(flavor)}
-                    id={flavor}
-                    handleDelete={handleDeleteFlavors}
+                    key={course}
+                    value={getCourseByID(course)}
+                    id={course}
+                    handleDelete={handleDeleteCourse}
                   />
                 ))}
               </div>
@@ -440,7 +488,7 @@ function SearchResult() {
                 ))}
               </div>
               {/* Link to another page*/}
-              <Link
+              <div
                 className="font-bold 
             text-[9.5px] xl:text-[11.5px] 2xl:text-[14px] 3xl:text-[18px] 
             w-[103px] xl:w-[128.5px] 2xl:w-[154px] 3xl:w-[197px] 
@@ -448,11 +496,11 @@ function SearchResult() {
             bg-[#322C2B] text-white text-center 
             pt-[9.5px] xl:pt-[11.5px] 2xl:pt-[14px] 3xl:pt-[18px] 
             rounded-[3px] xl:rounded-[4px] 2xl:rounded-[5px] 3xl:rounded-[6px] 
-            absolute bottom-0 right-0"
-                to={"/search-result"}
+            absolute bottom-0 right-0 cursor-pointer"
+                onClick={handleSubmit}
               >
                 Cook now {"->"}
-              </Link>
+              </div>
             </div>
           </div>
         </div>

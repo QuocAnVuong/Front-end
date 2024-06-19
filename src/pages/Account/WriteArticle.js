@@ -19,14 +19,16 @@ function WriteArticle() {
     IngredientID: [],
     Quantity: [],
     Style: [],
+    Course: [],
   };
   const publicationDate = new Date();
   const [articleValues, setArticleValue] = useState(initialState);
   const { user } = useContext(UserContext);
   const userID = user.UserID;
   const [ingredientsList, setIngredientsList] = useState([]);
-  const [flavorsList, setFlavorsList] = useState([]);
+  //const [flavorsList, setFlavorsList] = useState([]);
   const [stylesList, setStylesList] = useState([]);
+  const [courseList, setCourseList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState([]);
   const [search, setSearch] = useState("");
@@ -46,7 +48,8 @@ function WriteArticle() {
         setLoading(true);
         const data = await response.json();
         setIngredientsList(data.data.ingredients);
-        setFlavorsList(data.data.flavours);
+        //setFlavorsList(data.data.flavours);
+        setCourseList(data.data.course);
         setStylesList(data.data.styles);
         setLoading(false);
       } catch (error) {
@@ -184,6 +187,26 @@ function WriteArticle() {
     let element = document.getElementById(id);
     element.value = valueToSelect;
   }
+
+  //ChoosingCourse
+  const handleCourseChange = (value) => {
+    if (value !== "None") {
+      const valueNumber = parseInt(value, 10);
+      if (!articleValues.Course.includes(valueNumber)) {
+        const tempCourse = [...articleValues.Course, valueNumber];
+        setArticleValue({ ...articleValues, Course: tempCourse });
+      }
+    }
+    selectElement("course", "None");
+  };
+  const getCourseByID = (id) => {
+    const res = courseList.filter((course) => {
+      return course.id === id;
+    });
+    return res[0].course;
+  };
+
+  /*
   //Choosing Flavor
   const handleFlavorChange = (value) => {
     if (value !== "None") {
@@ -200,7 +223,7 @@ function WriteArticle() {
       return flavor.FlavourID === id;
     });
     return res[0].Flavour;
-  };
+  };*/
   //Choosing Style
   const handleStyleChange = (value) => {
     if (value !== "None") {
@@ -219,12 +242,20 @@ function WriteArticle() {
     return res[0].StyleName;
   };
 
+  const handleDeleteCourse = (value) => {
+    const tempCourse = articleValues.Course.filter((course) => {
+      return course !== value;
+    });
+    setArticleValue({ ...articleValues, Course: tempCourse });
+  };
+  /*
   const handleDeleteFlavors = (value) => {
     const tempFlavor = articleValues.Flavour.filter((flavor) => {
       return flavor !== value;
     });
     setArticleValue({ ...articleValues, Flavour: tempFlavor });
-  };
+  };*/
+
   const handleDeleteStyles = (value) => {
     const tempStyle = articleValues.Style.filter((style) => {
       return style !== value;
@@ -254,6 +285,10 @@ function WriteArticle() {
   /*useEffect(() => {
     console.log(articleValues);
   }, [articleValues]);*/
+
+  useEffect(() => {
+    console.log(articleValues.Content);
+  }, [articleValues.Content]);
 
   return (
     <form
@@ -374,8 +409,8 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
             mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
             >
               <select
-                name="flavor"
-                id="flavor"
+                name="course"
+                id="course"
                 className="border border-[#000] 
                 rounded-[10.5px] xl:rounded-[13px] 2xl:rounded-[15px] 3xl:rounded-[20px] 
                 w-full 
@@ -384,12 +419,12 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
                 text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
                 font-light cursor-pointer 
                 pr-[33px] xl:pr-[41px] 2xl:pr-[50px] 3xl:pr-[64px]"
-                onChange={(e) => handleFlavorChange(e.target.value)}
+                onChange={(e) => handleCourseChange(e.target.value)}
               >
-                <option value="None">Select Flavor</option>
-                {flavorsList.map((flavor) => (
-                  <option value={flavor.FlavourID} key={flavor.FlavourID}>
-                    {flavor.Flavour}
+                <option value="None">Select Course</option>
+                {courseList.map((course) => (
+                  <option value={course.id} key={course.id}>
+                    {course.course}
                   </option>
                 ))}
               </select>
@@ -455,12 +490,12 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
               Flavor
             </p>
             <div className="grid grid-cols-2">
-              {articleValues.Flavour.map((flavor) => (
+              {articleValues.Course.map((course) => (
                 <FoodTag
-                  key={flavor}
-                  value={getFlavorByID(flavor)}
-                  id={flavor}
-                  handleDelete={handleDeleteFlavors}
+                  key={course}
+                  value={getCourseByID(course)}
+                  id={course}
+                  handleDelete={handleDeleteCourse}
                 />
               ))}
             </div>

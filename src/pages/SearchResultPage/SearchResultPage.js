@@ -5,6 +5,7 @@ import {
   StyleContext,
   UserContext,
   LoginContext,
+  CourseContext,
 } from "../../context/ContextProvider";
 import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
@@ -13,6 +14,7 @@ function SearchResultPage() {
   const { ingredients } = useContext(IngredientContext);
   const { flavors } = useContext(FlavorContext);
   const { styles } = useContext(StyleContext);
+  const { courses } = useContext(CourseContext);
   const { user, setUser } = useContext(UserContext);
   const { isLogin, setIsLogin } = useContext(LoginContext);
   const [menu, setMenu] = useState([]);
@@ -60,6 +62,7 @@ function SearchResultPage() {
           filterType: "1",
           flavour: flavors,
           style: styles,
+          course: courses,
           ingredientList: ingredients,
         };
 
@@ -87,7 +90,7 @@ function SearchResultPage() {
     };
 
     fetchMockData();
-  }, [ingredients, flavors, styles]);
+  }, [ingredients, flavors, styles, courses]);
 
   useEffect(() => {
     if (!loadRecipe && !loadInit) {
