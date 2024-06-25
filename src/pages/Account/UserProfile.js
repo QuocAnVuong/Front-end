@@ -72,12 +72,6 @@ function UserProfile() {
               Username:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {user.Username}
             </p>
-            <img
-              src="/img/edit.png"
-              alt=""
-              className="w-[21px] xl:w-[26px] 2xl:w-[31px] 3xl:w-[40px] 
-              h-[21px] xl:h-[26px] 2xl:h-[31px] 3xl:h-[40px]"
-            />
           </div>
         </div>
       </div>
