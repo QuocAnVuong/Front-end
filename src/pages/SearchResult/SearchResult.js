@@ -12,6 +12,7 @@ import {
   AIContext,
   CourseContext,
   SearchContext,
+  ServingContext,
 } from "../../context/ContextProvider";
 
 function SearchResult() {
@@ -34,7 +35,8 @@ function SearchResult() {
   const [chatAI, setChatAi] = useState(false);
   const { setFromSearch } = useContext(AIContext);
   const { selectedOption, setSelectedOption } = useContext(SearchContext);
-  const options = ["Popularity", "Thing 2", "thing 3"];
+  const { serving, setServing } = useContext(ServingContext);
+  const options = ["Least Ingredients", "Popularity", "Shortest Duration"];
 
   useEffect(() => {
     const fetchMockData = async () => {
@@ -231,6 +233,10 @@ function SearchResult() {
   const handleOptionClick = (index) => {
     setSelectedOption(index);
   };
+  const handleChangeServing = (e) => {
+    const { value } = e.target;
+    setServing(value);
+  };
 
   //lg:1024 xl:1280 2xl:1536
   return (
@@ -387,39 +393,74 @@ function SearchResult() {
               pointer-events-none custom-arrow"
                 ></span>
               </div>
-              <div className="flex gap-x-3 items-center justify-between">
+              <div className="mb-[15px]">
                 <h2
                   className="
                 text-[10px] xl:text-[16px] 2xl:text-[20px] 3xl:text-[30px] 
-                font-semibold"
+                font-semibold text-center mb-[10px]"
                 >
                   Search by
                 </h2>
-                {options.map((option, index) => (
-                  <div
-                    key={index}
-                    className="flex gap-x-3 justify-center items-center"
-                  >
+                <div className="w-full flex gap-x-3 mb-3">
+                  {options.map((option, index) => (
                     <div
-                      className={`w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
+                      key={index}
+                      className="flex gap-x-3 justify-center items-center"
+                    >
+                      <div
+                        className={`w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
                       h-[20px] xl:h-[26px] 2xl:h-[30px] 3xl:h-[40px]
                       border-[2px] border-black cursor-pointer`}
-                      onClick={() => handleOptionClick(index)}
-                    >
-                      {selectedOption === index ? (
-                        <img
-                          src="/img/Check.png"
-                          alt=""
-                          className="w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
+                        onClick={() => handleOptionClick(index)}
+                      >
+                        {selectedOption === index ? (
+                          <img
+                            src="/img/Check.png"
+                            alt=""
+                            className="w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
                       h-[20px] xl:h-[26px] 2xl:h-[30px] 3xl:h-[40px]"
-                        />
-                      ) : (
-                        <></>
-                      )}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <p>{option}</p>
                     </div>
-                    <p>{option}</p>
+                  ))}
+                </div>
+                <div className="flex gap-x-3 justify-center items-center">
+                  <div
+                    className={`w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
+                      h-[20px] xl:h-[26px] 2xl:h-[30px] 3xl:h-[40px]
+                      border-[2px] border-black cursor-pointer`}
+                    onClick={() => handleOptionClick(3)}
+                  >
+                    {selectedOption === 3 ? (
+                      <img
+                        src="/img/Check.png"
+                        alt=""
+                        className="w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
+                      h-[20px] xl:h-[26px] 2xl:h-[30px] 3xl:h-[40px]"
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
-                ))}
+                  <p>Serving</p>
+                  <input
+                    type="number"
+                    id="Serving"
+                    name="Serving"
+                    placeholder={0}
+                    value={serving}
+                    onChange={handleChangeServing}
+                    className="border-[2.5px] w-[70px]
+                  bg-opacity-75 focus:outline-none
+                    h-[31px] xl:h-[39px] 2xl:h-[47px] 3xl:h-[60px]
+                    p-[10.5px] xl:p-[13px] 2xl:p-[15.5px] 3xl:p-[20px] 
+                    rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
+                  />
+                </div>
               </div>
               {/*
                 <div

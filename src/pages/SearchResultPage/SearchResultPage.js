@@ -7,6 +7,7 @@ import {
   LoginContext,
   CourseContext,
   SearchContext,
+  ServingContext,
 } from "../../context/ContextProvider";
 import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
@@ -17,6 +18,7 @@ function SearchResultPage() {
   const { styles } = useContext(StyleContext);
   const { courses } = useContext(CourseContext);
   const { selectedOption } = useContext(SearchContext);
+  const { serving } = useContext(ServingContext);
   const { user, setUser } = useContext(UserContext);
   const { isLogin, setIsLogin } = useContext(LoginContext);
   const [menu, setMenu] = useState([]);
@@ -62,6 +64,7 @@ function SearchResultPage() {
       try {
         const requestBody = {
           filterType: String(selectedOption + 1),
+          serving: serving,
           flavour: flavors,
           style: styles,
           course: courses,

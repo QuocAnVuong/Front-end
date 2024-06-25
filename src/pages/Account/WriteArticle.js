@@ -627,7 +627,7 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           className="flex-1 border-r-[1.25px] border-[#803D3B] outline-none px-[15px] h-full"
           placeholder="Write your article by markdown"
         />
-        <div className="flex-1 max-w-md border-l-[1.25px] border-[#803D3B] px-[15px]">
+        <div className="flex-1 max-w-md xl:max-w-lg 2xl:max-w-xl 3xl:max-w-2xl border-l-[1.25px] border-[#803D3B] px-[15px]">
           <div className="flex items-center justify-center">
             <div className="w-full text-[#322C2B]">
               <div className="flex items-center justify-between">
