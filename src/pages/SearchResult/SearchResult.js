@@ -11,6 +11,7 @@ import {
   UserContext,
   AIContext,
   CourseContext,
+  SearchContext,
 } from "../../context/ContextProvider";
 
 function SearchResult() {
@@ -32,6 +33,8 @@ function SearchResult() {
   const navigate = useNavigate();
   const [chatAI, setChatAi] = useState(false);
   const { setFromSearch } = useContext(AIContext);
+  const { selectedOption, setSelectedOption } = useContext(SearchContext);
+  const options = ["Popularity", "Thing 2", "thing 3"];
 
   useEffect(() => {
     const fetchMockData = async () => {
@@ -225,6 +228,10 @@ function SearchResult() {
     }
   };
 
+  const handleOptionClick = (index) => {
+    setSelectedOption(index);
+  };
+
   //lg:1024 xl:1280 2xl:1536
   return (
     <div className="flex flex-col h-screen">
@@ -380,30 +387,66 @@ function SearchResult() {
               pointer-events-none custom-arrow"
                 ></span>
               </div>
-              {/*<div
-                className="flex items-center 
+              <div className="flex gap-x-3 items-center justify-between">
+                <h2
+                  className="
+                text-[10px] xl:text-[16px] 2xl:text-[20px] 3xl:text-[30px] 
+                font-semibold"
+                >
+                  Search by
+                </h2>
+                {options.map((option, index) => (
+                  <div
+                    key={index}
+                    className="flex gap-x-3 justify-center items-center"
+                  >
+                    <div
+                      className={`w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
+                      h-[20px] xl:h-[26px] 2xl:h-[30px] 3xl:h-[40px]
+                      border-[2px] border-black cursor-pointer`}
+                      onClick={() => handleOptionClick(index)}
+                    >
+                      {selectedOption === index ? (
+                        <img
+                          src="/img/Check.png"
+                          alt=""
+                          className="w-[20px] xl:w-[26px] 2xl:w-[30px] 3xl:w-[40px]
+                      h-[20px] xl:h-[26px] 2xl:h-[30px] 3xl:h-[40px]"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                    <p>{option}</p>
+                  </div>
+                ))}
+              </div>
+              {/*
+                <div
+                  className="flex items-center 
             mb-[35px] xl:mb-[44px] 2xl:mb-[52.5px] 3xl:mb-[67px]"
-              >
-                <input
-                  type="checkbox"
-                  id="vegetarian"
-                  name="vegetarian"
-                  checked={chatAI}
-                  onChange={() => setChatAi(!chatAI)}
-                  className="cursor-pointer
+                >
+                  <input
+                    type="checkbox"
+                    id="vegetarian"
+                    name="vegetarian"
+                    checked={chatAI}
+                    onChange={() => setChatAi(!chatAI)}
+                    className="cursor-pointer
                 h-[18px] xl:h-[22px] 2xl:h-[26.5px] 3xl:h-[34px] 
                 w-[18px] xl:w-[22px] 2xl:w-[26.5px] 3xl:w-[34px] 
                 mr-[15.5px] xl:mr-[19.5px] 2xl:mr-[23.5px] 3xl:mr-[30px]"
-                />
-                <label
-                  htmlFor="vegetarian"
-                  className="
+                  />
+                  <label
+                    htmlFor="vegetarian"
+                    className="
                 text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
                 font-light cursor-pointer"
-                >
-                  Use AI
-                </label>
-              </div>*/}
+                  >
+                    Use AI
+                  </label>
+                </div>
+              */}
             </form>
           </div>
           <div

@@ -6,6 +6,7 @@ import {
   UserContext,
   LoginContext,
   CourseContext,
+  SearchContext,
 } from "../../context/ContextProvider";
 import NavBar from "../../components/NavBar/NavBar";
 import DishTag from "../../components/DishTag/DishTag";
@@ -15,6 +16,7 @@ function SearchResultPage() {
   const { flavors } = useContext(FlavorContext);
   const { styles } = useContext(StyleContext);
   const { courses } = useContext(CourseContext);
+  const { selectedOption } = useContext(SearchContext);
   const { user, setUser } = useContext(UserContext);
   const { isLogin, setIsLogin } = useContext(LoginContext);
   const [menu, setMenu] = useState([]);
@@ -59,12 +61,13 @@ function SearchResultPage() {
     const fetchMockData = async () => {
       try {
         const requestBody = {
-          filterType: "1",
+          filterType: String(selectedOption + 1),
           flavour: flavors,
           style: styles,
           course: courses,
           ingredientList: ingredients,
         };
+        console.log(JSON.stringify(requestBody));
 
         const response = await fetch(
           "http://localhost:3000/user/search-recipe",
