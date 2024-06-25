@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import IngredientTag from "../../components/IngredientTag/IngredientTag";
 import { useNavigate, useParams } from "react-router-dom";
 import FoodTag from "../../components/FoodTag/FoodTag";
-import Markdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ActiveContext } from "./UserMainPage";
 
@@ -329,20 +329,22 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
 "
       onSubmit={handleSubmit}
     >
-      <div>Edit Article</div>
+      {
+        <div className="text-[20px] xl:text-[32px] 2xl:text-[40px] 3xl:text-[60px] font-bold">
+          Edit Article
+        </div>
+      }
       <div
         className="text-[12.5px] xl:text-[15px] 2xl:text-[19px] 3xl:text-[24px]
         mb-[15.5px] xl:mb-[19.5px] 2xl:mb-[23.5px] 3xl:mb-[30px]
         w-full
         "
       >
-        <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
-          Title*
-        </p>
         <input
           type="text"
           id="Title"
           name="Title"
+          placeholder="Enter your title"
           value={articleValues.Title}
           onChange={handleChange}
           className="w-full border-[2.5px]
@@ -569,12 +571,10 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
         w-full
         "
       >
-        <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
-          Short Description
-        </p>
         <textarea
           id="Description"
           name="Description"
+          placeholder="Write your Short description"
           value={articleValues.Description}
           onChange={handleChange}
           className="w-full border-[2.5px]
@@ -592,6 +592,7 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           accept="image/*"
           id="image"
           name="image"
+          className="cursor-pointer"
         />
       </div>
       <div
@@ -600,8 +601,12 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
         w-full
         "
       >
-        <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
-          Number of Serving
+        <p
+          className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] 
+        text-[10px] xl:text-[16px] 2xl:text-[20px] 3xl:text-[30px] 
+        text-center font-semibold"
+        >
+          Number of Serving of your Dish
         </p>
         <input
           type="number"
@@ -623,8 +628,12 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
         w-full
         "
       >
-        <p className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] text-center">
-          Duration in Minutes
+        <p
+          className="mb-[6px] xl:mb-[8px] 2xl:mb-[9.5px] 3xl:mb-[12px] 
+        text-[10px] xl:text-[16px] 2xl:text-[20px] 3xl:text-[30px] 
+        text-center font-semibold"
+        >
+          Cooking Duration in Minutes
         </p>
         <input
           type="number"
@@ -640,6 +649,9 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
             rounded-[4px] xl:rounded-[5px] 2xl:rounded-[6px] 3xl:rounded-[8px]"
         />
       </div>
+      <p className="text-[20px] xl:text-[32px] 2xl:text-[40px] 3xl:text-[60px] font-bold">
+        Here is your preview Page
+      </p>
       <div className="w-full border-[2.5px] border-[#803D3B] flex">
         <textarea
           id="Content"
@@ -649,7 +661,7 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
           className="flex-1 border-r-[1.25px] border-[#803D3B] outline-none px-[15px] h-full"
           placeholder="Write your article by markdown"
         />
-        <div className="flex-1 border-l-[1.25px] border-[#803D3B] px-[15px]">
+        <div className="flex-1 max-w-md border-l-[1.25px] border-[#803D3B] px-[15px]">
           <div className="flex items-center justify-center">
             <div className="w-full text-[#322C2B]">
               <div className="flex items-center justify-between">
@@ -713,14 +725,16 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
                 ))}
               </ul>
               <p className="font-bold text-[28px] mb-[12.5px]">Directions</p>
-              <Markdown remarkPlugins={[remarkGfm]} className="text-[12px]">
-                {articleValues.Content}
-              </Markdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                className="break-words markdown ol"
+                children={articleValues.Content}
+              />
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center mb-[15px]">
         <button
           className="bg-[#322C2B] text-white flex items-center justify-center cursor-pointer
         w-[76px] xl:w-[96px] 2xl:w-[115px] 3xl:w-[147px] 

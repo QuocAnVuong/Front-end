@@ -22,3 +22,13 @@ input[type="search"]::-webkit-search-results-decoration {
 .select-selected {
   background-color: rgba(63, 63, 63, 0.5);
 }
+
+.markdown > * {
+  all: revert;
+  word-wrap: break-word;
+}
+
+ol {
+  list-style: decimal;
+  padding-left: 2rem;
+}

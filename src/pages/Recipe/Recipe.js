@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import { useParams } from "react-router-dom";
 import { LoginContext, UserContext } from "../../context/ContextProvider";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 function Recipe() {
   const { articleID } = useParams();
@@ -286,9 +288,14 @@ function Recipe() {
               ))}
             </ul>
             <p className="font-bold text-[56px] mb-[25px]">Directions</p>
-            <article className="font-normal text-[24px]">
+            {/*<article className="font-normal text-[24px]">
               {recipe.Content}
-            </article>
+            </article>*/}
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              className="break-words markdown ol"
+              children={recipe.Content}
+            />
           </div>
         </div>
       )}
