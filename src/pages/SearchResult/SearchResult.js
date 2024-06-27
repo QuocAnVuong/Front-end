@@ -3,7 +3,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./SearchResult.css";
 import { useState } from "react";
 import FoodTag from "../../components/FoodTag/FoodTag";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //import { AIContext } from "../../context/ContextProvider";
 import {
   IngredientContext,
@@ -31,7 +31,7 @@ function SearchResult() {
   const [loadInit, setLoadInit] = useState(true);
   const { isLogin, setIsLogin } = useContext(LoginContext);
   const { user, setUser } = useContext(UserContext);
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   //const [chatAI, setChatAi] = useState(false);
   //const { setFromSearch } = useContext(AIContext);
   const { selectedOption, setSelectedOption } = useContext(SearchContext);
