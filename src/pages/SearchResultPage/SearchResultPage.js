@@ -33,13 +33,16 @@ function SearchResultPage() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("https://progexbackend.onrender.com/init", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://progexbackend.onrender.com/init",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
         setLoadInit(true);
         const data = await response.json();
         if (data.message === null || data.message !== "Token not found") {
@@ -96,7 +99,7 @@ function SearchResultPage() {
     };
 
     fetchMockData();
-  }, [ingredients, flavors, styles, courses]);
+  }, [ingredients, flavors, styles, courses, selectedOption, serving]);
 
   useEffect(() => {
     if (!loadRecipe && !loadInit) {

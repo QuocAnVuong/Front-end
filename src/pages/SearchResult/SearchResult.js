@@ -3,13 +3,13 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./SearchResult.css";
 import { useState } from "react";
 import FoodTag from "../../components/FoodTag/FoodTag";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
+//import { AIContext } from "../../context/ContextProvider";
 import {
   IngredientContext,
   StyleContext,
   LoginContext,
   UserContext,
-  AIContext,
   CourseContext,
   SearchContext,
   ServingContext,
@@ -31,9 +31,9 @@ function SearchResult() {
   const [loadInit, setLoadInit] = useState(true);
   const { isLogin, setIsLogin } = useContext(LoginContext);
   const { user, setUser } = useContext(UserContext);
-  const navigate = useNavigate();
-  const [chatAI, setChatAi] = useState(false);
-  const { setFromSearch } = useContext(AIContext);
+  //const navigate = useNavigate();
+  //const [chatAI, setChatAi] = useState(false);
+  //const { setFromSearch } = useContext(AIContext);
   const { selectedOption, setSelectedOption } = useContext(SearchContext);
   const { serving, setServing } = useContext(ServingContext);
   const options = ["Least Ingredients", "Popularity", "Shortest Duration"];
@@ -41,13 +41,16 @@ function SearchResult() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("https://progexbackend.onrender.com/init", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://progexbackend.onrender.com/init",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
         setLoadInit(true);
         const data = await response.json();
         if (data.message === null || data.message !== "Token not found") {
@@ -69,12 +72,15 @@ function SearchResult() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("https://progexbackend.onrender.com/get-everything", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "https://progexbackend.onrender.com/get-everything",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         setLoadEverything(true);
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -223,11 +229,11 @@ function SearchResult() {
   };
 
   const handleSubmit = () => {
-    if (!chatAI) navigate("/search-result");
+    /*if (!chatAI) navigate("/search-result");
     else {
       setFromSearch(true);
       navigate("/chatAI");
-    }
+    }*/
   };
 
   const handleOptionClick = (index) => {

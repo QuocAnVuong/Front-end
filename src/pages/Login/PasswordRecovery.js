@@ -34,114 +34,115 @@ function PasswordRecovery() {
     setDuringLogin(true);
   }, [setDuringLogin]);
 
-  const fetchFormSubmit = async () => {
-    try {
-      console.log(formValues);
-      const response = await fetch(
-        "https://progexbackend.onrender.com/user/reset-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formValues),
-        }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("There was a problem fetching the mock data:", error);
-    }
-  };
-  const fetchOTP = async () => {
-    try {
-      const body = {};
-      body.Email = formValues.Email;
-      console.log(body);
-      const response = await fetch("https://progexbackend.onrender.com/user/send-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(body),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("There was a problem fetching the mock data:", error);
-    }
-  };
-
   useEffect(() => {
     console.log(formErrors);
   }, [formErrors]);
 
   useEffect(() => {
-    validate();
-  }, [cases]);
-
-  const validate = async () => {
-    let data;
-    console.log(cases);
-    if (cases === "Submit") {
-      data = await fetchFormSubmit();
-    } else if (cases === "OTP") {
-      data = await fetchOTP();
-    } else {
-      return;
-    }
-    console.log(data);
-    if (data.validationErrors !== undefined) {
-      const errorList = data.validationErrors;
-      console.log(errorList);
-      const errors = {};
-      for (let i = 0; i < errorList.length; i++) {
-        const error = errorList[i];
-        switch (error.path) {
-          case "Email":
-            if (!errors.Email) {
-              errors.Email = error.msg;
-            }
-            console.log("Email path");
-            console.log(error.msg);
-            break;
-          case "Password":
-            if (!errors.Password) {
-              errors.Password = error.msg;
-            }
-            console.log("Password path");
-            console.log(error.msg);
-            break;
-          case "confirmPassword":
-            if (!errors.confirmPassword) {
-              errors.confirmPassword = error.msg;
-            }
-            console.log("confirm path");
-            console.log(error.msg);
-            break;
-          case "OTP":
-            if (!errors.OTP) {
-              errors.OTP = error.msg;
-            }
-            console.log("OTP path");
-            console.log(error.msg);
-            break;
-          default:
-            console.log("NO path");
-            break;
-        }
-        console.log(errors);
+    const fetchFormSubmit = async () => {
+      try {
+        console.log(formValues);
+        const response = await fetch(
+          "https://progexbackend.onrender.com/user/reset-password",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formValues),
+          }
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
       }
-
-      setFormErrors(errors);
-    } else {
+    };
+    const fetchOTP = async () => {
+      try {
+        const body = {};
+        body.Email = formValues.Email;
+        console.log(body);
+        const response = await fetch(
+          "https://progexbackend.onrender.com/user/send-otp",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(body),
+          }
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("There was a problem fetching the mock data:", error);
+      }
+    };
+    const validate = async () => {
+      let data;
+      console.log(cases);
       if (cases === "Submit") {
-        setCases("");
-        navigate("/login");
+        data = await fetchFormSubmit();
+      } else if (cases === "OTP") {
+        data = await fetchOTP();
+      } else {
+        return;
       }
-    }
-  };
+      console.log(data);
+      if (data.validationErrors !== undefined) {
+        const errorList = data.validationErrors;
+        console.log(errorList);
+        const errors = {};
+        for (let i = 0; i < errorList.length; i++) {
+          const error = errorList[i];
+          switch (error.path) {
+            case "Email":
+              if (!errors.Email) {
+                errors.Email = error.msg;
+              }
+              console.log("Email path");
+              console.log(error.msg);
+              break;
+            case "Password":
+              if (!errors.Password) {
+                errors.Password = error.msg;
+              }
+              console.log("Password path");
+              console.log(error.msg);
+              break;
+            case "confirmPassword":
+              if (!errors.confirmPassword) {
+                errors.confirmPassword = error.msg;
+              }
+              console.log("confirm path");
+              console.log(error.msg);
+              break;
+            case "OTP":
+              if (!errors.OTP) {
+                errors.OTP = error.msg;
+              }
+              console.log("OTP path");
+              console.log(error.msg);
+              break;
+            default:
+              console.log("NO path");
+              break;
+          }
+          console.log(errors);
+        }
+
+        setFormErrors(errors);
+      } else {
+        if (cases === "Submit") {
+          setCases("");
+          navigate("/login");
+        }
+      }
+    };
+    validate();
+  }, [cases, formValues, navigate]);
 
   return (
     <div className="h-screen flex flex-col">
