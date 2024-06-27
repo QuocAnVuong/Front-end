@@ -19,7 +19,7 @@ function EditWallet() {
   const fetchMockData = async () => {
     try {
       console.log(formValues);
-      const response = await fetch("http://localhost:3000/writer/update-bank", {
+      const response = await fetch("https://progexbackend.onrender.com/writer/update-bank", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -39,12 +39,15 @@ function WriteArticle() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/get-everything", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "https://progexbackend.onrender.com/get-everything",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         //setLoading(true);
         const data = await response.json();
         setIngredientsList(data.data.ingredients);
@@ -68,11 +71,14 @@ function WriteArticle() {
   };
   const fetchImageData = async (formData) => {
     try {
-      const response = await fetch("http://localhost:3000/writer/upload", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://progexbackend.onrender.com/writer/upload",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
       const data = await response.json();
       console.log(data);
       return data;
@@ -80,7 +86,6 @@ function WriteArticle() {
       console.error("There was a problem fetching the data:", error);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -101,7 +106,7 @@ function WriteArticle() {
       console.log(articleValues);
       try {
         const response = await fetch(
-          "http://localhost:3000/writer/add-article",
+          "https://progexbackend.onrender.com/writer/add-article",
           {
             method: "POST",
             headers: {

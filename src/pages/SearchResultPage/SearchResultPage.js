@@ -33,7 +33,7 @@ function SearchResultPage() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/init", {
+        const response = await fetch("https://progexbackend.onrender.com/init", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ function SearchResultPage() {
         console.log(JSON.stringify(requestBody));
 
         const response = await fetch(
-          "http://localhost:3000/user/search-recipe",
+          "https://progexbackend.onrender.com/user/search-recipe",
           {
             method: "POST",
             headers: {

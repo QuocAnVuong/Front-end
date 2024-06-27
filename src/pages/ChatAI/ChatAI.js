@@ -29,7 +29,7 @@ function ChatAI() {
           IngredientID: ingredients,
         };
         try {
-          const response = await fetch("http://localhost:3000/user/chat-ai", {
+          const response = await fetch("https://progexbackend.onrender.com/user/chat-ai", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

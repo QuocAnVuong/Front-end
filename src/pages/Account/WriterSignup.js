@@ -19,7 +19,7 @@ function WriterSignup() {
   const fetchMockData = async () => {
     try {
       console.log(formValues);
-      const response = await fetch("http://localhost:3000/writer/add-writer", {
+      const response = await fetch("https://progexbackend.onrender.com/writer/add-writer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

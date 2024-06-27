@@ -17,7 +17,7 @@ function EditMail() {
   const fetchMockData = async () => {
     try {
       console.log(formValues);
-      const response = await fetch("http://localhost:3000/user/update-info", {
+      const response = await fetch("https://progexbackend.onrender.com/user/update-info", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

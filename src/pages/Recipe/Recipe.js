@@ -22,7 +22,7 @@ function Recipe() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/init", {
+        const response = await fetch("https://progexbackend.onrender.com/init", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function Recipe() {
     const fetchLikeData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/user/get-liked-article",
+          "https://progexbackend.onrender.com/user/get-liked-article",
           {
             method: "POST",
             headers: {
@@ -98,7 +98,7 @@ function Recipe() {
           ArticleID: articleID,
         };
         const response = await fetch(
-          "http://localhost:3000/user/get-one-article",
+          "https://progexbackend.onrender.com/user/get-one-article",
           {
             method: "POST",
             headers: {
@@ -122,7 +122,7 @@ function Recipe() {
 
     const fetchIngredients = async () => {
       try {
-        const response = await fetch("http://localhost:3000/get-everything", {
+        const response = await fetch("https://progexbackend.onrender.com/get-everything", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -179,7 +179,7 @@ function Recipe() {
           ArticleID: articleID,
         };
         const response = await fetch(
-          "http://localhost:3000/user/like-article",
+          "https://progexbackend.onrender.com/user/like-article",
           {
             method: "POST",
             headers: {

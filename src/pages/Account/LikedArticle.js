@@ -14,7 +14,7 @@ function LikedArticle() {
     const fetchMenuData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/user/get-liked-article",
+          "https://progexbackend.onrender.com/user/get-liked-article",
           {
             method: "POST",
             headers: {

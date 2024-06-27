@@ -15,7 +15,7 @@ function SeeRevenue() {
   const fetchRevenue = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/writer/get-royalties",
+        "https://progexbackend.onrender.com/writer/get-royalties",
         {
           method: "POST",
           headers: {

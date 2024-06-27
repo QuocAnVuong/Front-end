@@ -16,7 +16,7 @@ function Landing() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/init", {
+        const response = await fetch("https://progexbackend.onrender.com/init", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
