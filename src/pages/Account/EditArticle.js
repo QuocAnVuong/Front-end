@@ -71,6 +71,7 @@ function EditArticle() {
         data[0].Flavour = data[0].Flavour.filter((value) => value !== 0);
         data[0].Course = data[0].Course.filter((value) => value !== 0);
         setArticleValue(data[0]);
+        setImagePreview(data[0].Image);
         setLoadArticle(false);
       } catch (error) {
         console.error(
@@ -82,7 +83,7 @@ function EditArticle() {
 
     fetchEverythingData();
     fetchData();
-  }, []);
+  }, [articleID]);
   useEffect(() => {
     if (!loadArticle && !loadIngredient) {
       setLoading(false);
@@ -109,26 +110,7 @@ function EditArticle() {
       console.error("There was a problem fetching the data:", error);
     }
   };
-  const fetchArticleData = async () => {
-    console.log(articleValues);
-    try {
-      const response = await fetch(
-        "http://localhost:3000/writer/update-article",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(articleValues),
-        }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("There was a problem fetching the data:", error);
-    }
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -145,15 +127,35 @@ function EditArticle() {
     setSendData(true);
   };
   useEffect(() => {
+    const fetchArticleData = async () => {
+      console.log(articleValues);
+      try {
+        const response = await fetch(
+          "http://localhost:3000/writer/update-article",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(articleValues),
+          }
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("There was a problem fetching the data:", error);
+      }
+    };
     const doSendData = async () => {
-      const data = await fetchArticleData();
+      await fetchArticleData();
     };
     if (goSendData) {
       doSendData();
       setActiveMenuItem("Your article");
       navigate("/user/article");
     }
-  }, [goSendData]);
+  }, [goSendData, navigate, setActiveMenuItem, articleValues]);
 
   //For the search function
   const checkData = (value) => {
@@ -685,7 +687,7 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
               </div>
               <img
                 src={imagePreview}
-                alt="Please add your image in here"
+                alt="Please add your Dish in here"
                 className="w-full mt-[15px]"
               />
               <div className="border border-[#322C2B] w-full rounded-[8px] my-[15px] p-[10px]">

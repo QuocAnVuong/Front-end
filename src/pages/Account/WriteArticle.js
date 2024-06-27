@@ -29,7 +29,7 @@ function WriteArticle() {
   //const [flavorsList, setFlavorsList] = useState([]);
   const [stylesList, setStylesList] = useState([]);
   const [courseList, setCourseList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
   const [result, setResult] = useState([]);
   const [search, setSearch] = useState("");
   const [imagePreview, setImagePreview] = useState(articleValues.Image);
@@ -45,13 +45,13 @@ function WriteArticle() {
             "Content-Type": "application/json",
           },
         });
-        setLoading(true);
+        //setLoading(true);
         const data = await response.json();
         setIngredientsList(data.data.ingredients);
         //setFlavorsList(data.data.flavours);
         setCourseList(data.data.course);
         setStylesList(data.data.styles);
-        setLoading(false);
+        //setLoading(false);
       } catch (error) {
         console.error(
           "There was a problem fetching the everything data:",
@@ -80,23 +80,7 @@ function WriteArticle() {
       console.error("There was a problem fetching the data:", error);
     }
   };
-  const fetchArticleData = async () => {
-    console.log(articleValues);
-    try {
-      const response = await fetch("http://localhost:3000/writer/add-article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(articleValues),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("There was a problem fetching the data:", error);
-    }
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -113,13 +97,33 @@ function WriteArticle() {
     });
   };
   useEffect(() => {
+    const fetchArticleData = async () => {
+      console.log(articleValues);
+      try {
+        const response = await fetch(
+          "http://localhost:3000/writer/add-article",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(articleValues),
+          }
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("There was a problem fetching the data:", error);
+      }
+    };
     const sendData = async () => {
-      const data = await fetchArticleData();
+      await fetchArticleData();
       setActiveMenuItem("Your article");
       navigate("/user/article");
     };
     if (articleValues.Image !== "") sendData();
-  }, [articleValues.Image]);
+  }, [articleValues.Image, navigate, setActiveMenuItem, articleValues]);
 
   //For the search function
   const checkData = (value) => {
@@ -650,7 +654,7 @@ gap-y-[13px] xl:gap-y-[16px] 2xl:gap-y-[19.5px] 3xl:gap-y-[25px]
               </div>
               <img
                 src={imagePreview}
-                alt="Please add your image in here"
+                alt="Please add your Dish in here"
                 className="w-full mt-[15px]"
               />
               <div className="border border-[#322C2B] w-full rounded-[8px] my-[15px] p-[10px]">
