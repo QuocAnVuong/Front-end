@@ -21,7 +21,7 @@ function Landing() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
+          credentials: "include", mode: "cors",
         });
         setLoading(true);
         const data = await response.json();

@@ -22,7 +22,7 @@ function EditMail() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", mode: "cors",
         body: JSON.stringify(formValues),
       });
       const data = await response.json();

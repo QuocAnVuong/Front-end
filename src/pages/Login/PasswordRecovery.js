@@ -70,7 +70,7 @@ function PasswordRecovery() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", mode: "cors",
             body: JSON.stringify(body),
           }
         );

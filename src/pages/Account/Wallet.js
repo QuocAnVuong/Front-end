@@ -15,7 +15,7 @@ function Wallet() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
+          credentials: "include", mode: "cors",
         }
       );
       setLoading(true);

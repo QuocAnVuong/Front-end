@@ -40,7 +40,7 @@ function SearchResultPage() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", mode: "cors",
           }
         );
         setLoadInit(true);
@@ -82,7 +82,7 @@ function SearchResultPage() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", mode: "cors",
             body: JSON.stringify(requestBody),
           }
         );
