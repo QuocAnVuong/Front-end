@@ -229,6 +229,7 @@ function SearchResult() {
   };
 
   const handleSubmit = () => {
+    navigate("/search-result");
     /*if (!chatAI) navigate("/search-result");
     else {
       setFromSearch(true);
