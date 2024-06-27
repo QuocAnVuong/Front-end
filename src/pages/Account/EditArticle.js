@@ -27,12 +27,15 @@ function EditArticle() {
   useEffect(() => {
     const fetchEverythingData = async () => {
       try {
-        const response = await fetch("https://progexbackend.onrender.com/get-everything", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "https://progexbackend.onrender.com/get-everything",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         setLoadIngredient(true);
         const data = await response.json();
         setIngredientsList(data.data.ingredients);
@@ -98,11 +101,14 @@ function EditArticle() {
   };
   const fetchImageData = async (formData) => {
     try {
-      const response = await fetch("https://progexbackend.onrender.com/writer/upload", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://progexbackend.onrender.com/writer/upload",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
       const data = await response.json();
       console.log(data);
       return data;
@@ -110,11 +116,6 @@ function EditArticle() {
       console.error("There was a problem fetching the data:", error);
     }
   };
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> c67cba39364d12a52440cdce4befc976d4691117
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();

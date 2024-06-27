@@ -13,8 +13,8 @@ function ChatAI() {
   const { ingredients } = useContext(IngredientContext);
   const { flavors } = useContext(FlavorContext);
   const { styles } = useContext(StyleContext);
-  const [loading, setLoading] = useState(true);
-  const [chatID, setChatID] = useState(undefined);
+  //const [loading, setLoading] = useState(true);
+  //const [chatID, setChatID] = useState(undefined);
   const [chat, setChat] = useState([]);
   const navigate = useNavigate();
 
@@ -29,27 +29,30 @@ function ChatAI() {
           IngredientID: ingredients,
         };
         try {
-          const response = await fetch("https://progexbackend.onrender.com/user/chat-ai", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          });
-          setLoading(true);
+          const response = await fetch(
+            "https://progexbackend.onrender.com/user/chat-ai",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestBody),
+            }
+          );
+          //setLoading(true);
           const data = await response.json();
           console.log(data);
           const newChat = [...chat, { role: "AI", value: data.response }];
           setChat(newChat);
-          setChatID(data.chatID);
-          setLoading(false);
+          //setChatID(data.chatID);
+          //setLoading(false);
         } catch (error) {
           console.error("There was a problem fetching the mock data:", error);
         }
       };
       fetchAIData();
     }
-  }, []);
+  }, [chat, flavors, fromSearch, ingredients, navigate, styles]);
 
   return (
     <div className="w-screen h-screen flex flex-col">
