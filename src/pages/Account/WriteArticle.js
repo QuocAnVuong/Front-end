@@ -39,7 +39,7 @@ function WriteArticle() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/get-everything", {
+        const response = await fetch("https://progexbackend.onrender.com/get-everything", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ function WriteArticle() {
   };
   const fetchImageData = async (formData) => {
     try {
-      const response = await fetch("http://localhost:3000/writer/upload", {
+      const response = await fetch("https://progexbackend.onrender.com/writer/upload", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -83,7 +83,7 @@ function WriteArticle() {
   const fetchArticleData = async () => {
     console.log(articleValues);
     try {
-      const response = await fetch("http://localhost:3000/writer/add-article", {
+      const response = await fetch("https://progexbackend.onrender.com/writer/add-article", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

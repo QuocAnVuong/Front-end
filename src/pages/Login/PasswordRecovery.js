@@ -38,7 +38,7 @@ function PasswordRecovery() {
     try {
       console.log(formValues);
       const response = await fetch(
-        "http://localhost:3000/user/reset-password",
+        "https://progexbackend.onrender.com/user/reset-password",
         {
           method: "POST",
           headers: {
@@ -58,7 +58,7 @@ function PasswordRecovery() {
       const body = {};
       body.Email = formValues.Email;
       console.log(body);
-      const response = await fetch("http://localhost:3000/user/send-otp", {
+      const response = await fetch("https://progexbackend.onrender.com/user/send-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

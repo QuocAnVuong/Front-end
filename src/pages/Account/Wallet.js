@@ -9,7 +9,7 @@ function Wallet() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/writer/get-bankinfo",
+        "https://progexbackend.onrender.com/writer/get-bankinfo",
         {
           method: "POST",
           headers: {

@@ -27,7 +27,7 @@ function EditArticle() {
   useEffect(() => {
     const fetchEverythingData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/get-everything", {
+        const response = await fetch("https://progexbackend.onrender.com/get-everything", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function EditArticle() {
           ArticleID: articleID,
         };
         const response = await fetch(
-          "http://localhost:3000/user/get-one-article",
+          "https://progexbackend.onrender.com/user/get-one-article",
           {
             method: "POST",
             headers: {
@@ -97,7 +97,7 @@ function EditArticle() {
   };
   const fetchImageData = async (formData) => {
     try {
-      const response = await fetch("http://localhost:3000/writer/upload", {
+      const response = await fetch("https://progexbackend.onrender.com/writer/upload", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -113,7 +113,7 @@ function EditArticle() {
     console.log(articleValues);
     try {
       const response = await fetch(
-        "http://localhost:3000/writer/update-article",
+        "https://progexbackend.onrender.com/writer/update-article",
         {
           method: "POST",
           headers: {

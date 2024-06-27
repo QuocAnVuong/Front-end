@@ -23,7 +23,7 @@ function EditProfileImg() {
     console.log(e.target);
     console.log(form);
     try {
-      const response = await fetch("http://localhost:3000/writer/upload", {
+      const response = await fetch("https://progexbackend.onrender.com/writer/upload", {
         method: "POST",
 
         credentials: "include",

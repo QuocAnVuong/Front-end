@@ -15,7 +15,7 @@ function SeeArticle() {
     const fetchMenuData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/writer/get-writer-article",
+          "https://progexbackend.onrender.com/writer/get-writer-article",
           {
             method: "POST",
             headers: {

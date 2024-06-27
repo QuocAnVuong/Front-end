@@ -16,7 +16,7 @@ function UserMainPage() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/init", {
+        const response = await fetch("https://progexbackend.onrender.com/init", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ function UserMainPage() {
   }, [user]);
   const fetchLogout = async () => {
     try {
-      const response = await fetch("http://localhost:3000/user/logout", {
+      const response = await fetch("https://progexbackend.onrender.com/user/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
