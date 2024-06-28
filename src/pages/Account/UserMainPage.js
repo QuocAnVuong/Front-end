@@ -56,6 +56,7 @@ function UserMainPage() {
         },
         credentials: "include", 
       });
+      document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
       const data = await response.json();
       return data;
     } catch (error) {
