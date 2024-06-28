@@ -49,14 +49,14 @@ function UserMainPage() {
   }, [user]);
   const fetchLogout = async () => {
     try {
-      const response = await fetch("https://progexbackend.onrender.com/user/logout", {
+      const response = await fetch("https://progexbackend.onrender.com/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include", 
       });
-      document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+      console.log("Logged out");
       const data = await response.json();
       return data;
     } catch (error) {
