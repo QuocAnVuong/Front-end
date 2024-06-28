@@ -21,7 +21,7 @@ function UserMainPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", mode: "cors",
+          credentials: "include", 
         });
         setLoading(true);
         const data = await response.json();
@@ -54,7 +54,7 @@ function UserMainPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", mode: "cors",
+        credentials: "include", 
       });
       const data = await response.json();
       return data;

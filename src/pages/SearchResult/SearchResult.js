@@ -48,7 +48,7 @@ function SearchResult() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include", mode: "cors",
+            credentials: "include", 
           }
         );
         setLoadInit(true);

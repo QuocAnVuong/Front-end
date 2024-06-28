@@ -105,7 +105,7 @@ function EditArticle() {
         "https://progexbackend.onrender.com/writer/upload",
         {
           method: "POST",
-          credentials: "include", mode: "cors",
+          credentials: "include", 
           body: formData,
         }
       );
@@ -142,7 +142,7 @@ function EditArticle() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include", mode: "cors",
+            credentials: "include", 
             body: JSON.stringify(articleValues),
           }
         );

@@ -44,7 +44,7 @@ function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", mode: "cors",
+        credentials: "include", 
         body: JSON.stringify(formValues),
       });
       const data = await response.json();

@@ -26,7 +26,7 @@ function EditProfileImg() {
       const response = await fetch("https://progexbackend.onrender.com/writer/upload", {
         method: "POST",
 
-        credentials: "include", mode: "cors",
+        credentials: "include", 
         body: new FormData(e.target),
       });
       if (response.ok) {
