@@ -16,13 +16,16 @@ function Landing() {
   useEffect(() => {
     const fetchMockData = async () => {
       try {
-        const response = await fetch("https://progexbackend.onrender.com/init", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://progexbackend.onrender.com/init",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
         setLoading(true);
         const data = await response.json();
         if (data.message === null || data.message !== "Token not found") {
@@ -158,6 +161,7 @@ function Landing() {
                 </p>
                 <Link
                   to={"/search"}
+                  name="Discover Now"
                   className="bg-[#322C2B] text-white flex items-center justify-center
                 w-[110px] xl:w-[137px] 2xl:w-[164.5] 3xl:w-[210px] 
                 h-[30px] xl:h-[38px] 2xl:h-[45.4px] 3xl:h-[58px] 
