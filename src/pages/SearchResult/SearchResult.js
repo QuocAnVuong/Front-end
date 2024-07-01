@@ -48,7 +48,7 @@ function SearchResult() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include", 
+            credentials: "include",
           }
         );
         setLoadInit(true);
@@ -303,6 +303,7 @@ function SearchResult() {
                   />
                   <input
                     type="search"
+                    name="Ingredients"
                     className="text-[18px] xl:text-[22px] 2xl:text-[26.5px] 3xl:text-[34px] 
                   font-light justify-center border-none bg-transparent focus:outline-none"
                     placeholder="Add your ingredients"
