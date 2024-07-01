@@ -75,7 +75,7 @@ function WriteArticle() {
         "https://progexbackend.onrender.com/writer/upload",
         {
           method: "POST",
-          credentials: "include",
+          credentials: "include", 
           body: formData,
         }
       );
@@ -112,7 +112,7 @@ function WriteArticle() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", 
             body: JSON.stringify(articleValues),
           }
         );

@@ -48,7 +48,7 @@ function SearchResult() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", 
           }
         );
         setLoadInit(true);

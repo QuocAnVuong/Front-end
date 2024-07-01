@@ -24,7 +24,7 @@ function WriterSignup() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", 
         body: JSON.stringify(formValues),
       });
       const data = await response.json();

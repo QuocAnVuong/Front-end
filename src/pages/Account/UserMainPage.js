@@ -21,7 +21,7 @@ function UserMainPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
+          credentials: "include", 
         });
         setLoading(true);
         const data = await response.json();
@@ -49,13 +49,14 @@ function UserMainPage() {
   }, [user]);
   const fetchLogout = async () => {
     try {
-      const response = await fetch("https://progexbackend.onrender.com/user/logout", {
+      const response = await fetch("https://progexbackend.onrender.com/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", 
       });
+      console.log("Logged out");
       const data = await response.json();
       return data;
     } catch (error) {

@@ -27,7 +27,7 @@ function Recipe() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
+          credentials: "include", 
         });
         setLoadInit(true);
         const data = await response.json();
@@ -53,7 +53,7 @@ function Recipe() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", 
           }
         );
         setLoadLike(true);
@@ -185,7 +185,7 @@ function Recipe() {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include",
+            credentials: "include", 
             body: JSON.stringify(requestBody),
           }
         );
